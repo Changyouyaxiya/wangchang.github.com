@@ -1,0 +1,7 @@
+---
+layout: post
+title: "Tese"
+date: 2012-09-28 03:48
+comments: true
+categories: 
+---
