@@ -1,4 +1,4 @@
-﻿---
+---
 layout: post
 title: "My New Blog Starts"
 date: 2012-09-29 01:46
@@ -21,7 +21,6 @@ Awesome code snippet
 Last night I lay in bed looking up at the stars in the sky and I thought to myself, where the heck is the ceiling.
 {% endblockquote %}
 
-中文到底行不行？
 
 <!--more-->
 
