@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>http://wangchang.github.com/blog/2012/09/my-new-blog-starts/</loc>
+        <lastmod>2012-10-08T20:11:24+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://wangchang.github.com/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/
+        </loc>
+        <lastmod>2012-10-08T21:27:56+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://wangchang.github.com/blog/archives/</loc>
+        <lastmod>2012-10-08T21:27:56+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://wangchang.github.com/</loc>
+        <lastmod>2012-10-08T21:27:56+08:00</lastmod>
+    </url>
+</urlset>
