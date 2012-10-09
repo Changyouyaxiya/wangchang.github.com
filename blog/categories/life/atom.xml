@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[WangChang's Blog]]></title>
-  <link href="http://wangchang.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Life | WangChang's Blog]]></title>
+  <link href="http://wangchang.github.com/blog/categories/life/atom.xml" rel="self"/>
   <link href="http://wangchang.github.com/"/>
   <updated>2012-10-09T15:19:36+08:00</updated>
   <id>http://wangchang.github.com/</id>
@@ -26,34 +26,29 @@
 
 <p>利用RVM安装ruby,RVM管理Ruby的话感觉更爽一点,自己也懒得编译了.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:apt-get install curl git
-</span><span class='line'>root@Node1:curl -L get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure>
-
-
-
+</span><span class='line'>root@Node1:curl -L get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <!--more-->
 
 
 <p>根据RVM的要求,还需要将用户加入组以及更新配置.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:gpasswd -a root rvm
-</span><span class='line'>root@Node1:source /etc/profile.d/rvm.sh</span></code></pre></td></tr></table></div></figure>
-
+</span><span class='line'>root@Node1:source /etc/profile.d/rvm.sh</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>安装编译依赖以及Ruby</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:apt-get install build-essential bison openssl libreadline6 libreadline6-dev curl git-core zlib1g
 </span><span class='line'>zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf
-</span><span class='line'>root@Node1:rvm install 1.9.2</span></code></pre></td></tr></table></div></figure>
-
+</span><span class='line'>root@Node1:rvm install 1.9.2</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>OK,环境安装完成.</p>
 
@@ -61,45 +56,41 @@
 
 <p>先通过git克隆octopress的代码.再安装相应的组件.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress
 </span><span class='line'>cd octopress
 </span><span class='line'>gem install bundler
-</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
-
+</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>然后安装默认主题:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
-
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h2>3 设置Github</h2>
 
 <p>这一步是以后维护的关键主要有以下步骤:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages 设置于github的关联
 </span><span class='line'>rake generate 生成静态页面
-</span><span class='line'>rake deploy 向github发送页面</span></code></pre></td></tr></table></div></figure>
-
+</span><span class='line'>rake deploy 向github发送页面</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>注意,所有的操作都应该是在octopress的源码中进行,rake deploy只是将生成的静态页面发送到github的master分支.,所以最后我们需要将源码保存为source分支.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>git status
 </span><span class='line'>git add .
 </span><span class='line'>git commit -m 'commit message'
-</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
-
+</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>以后维护的时候记得需要先checkout到source分支才行.</p>
 ]]></content>
@@ -114,18 +105,14 @@
 
 <p>this is code block</p>
 
-<figure class='code'><figcaption><span>This is code block </span></figcaption>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>This is code block </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Awesome code snippet</span></code></pre></td></tr></table></div></figure>
-
+</pre></td><td class='code'><pre><code class=''><span class='line'>Awesome code snippet</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p><img src="http://placekitten.com/890/280">
-<img src="http://wangchang.github.com/images/2012-09-29-my-new-blog-starts-1.jpg"></p>
+<img src="/images/2012-09-29-my-new-blog-starts-1.jpg"></p>
 
-<blockquote><p>Last night I lay in bed looking up at the stars in the sky and I thought to myself, where the heck is the ceiling.</p></blockquote>
-
-
-
+<p><blockquote><p>Last night I lay in bed looking up at the stars in the sky and I thought to myself, where the heck is the ceiling.</p></blockquote></p>
 
 <!--more-->
 
