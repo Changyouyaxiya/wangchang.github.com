@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | WangChang's Blog]]></title>
   <link href="http://wangchang.github.com/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://wangchang.github.com/"/>
-  <updated>2012-10-15T14:07:14+08:00</updated>
+  <updated>2012-10-15T14:09:34+08:00</updated>
   <id>http://wangchang.github.com/</id>
   <author>
     <name><![CDATA[Wang Chang]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>关于如何在octopress中使用插件或者markdown语法营造出特定的代码效果,我折腾了好久,网上大多没有比较基础易懂的教程,所以今天对于markdown语法和octopress的写作效果做一个总结,方便以后查找.这其中也包含了对octopress首页中写作插件的翻译.</p>
 
 <blockquote><p>About: OS:Win 7 2012年10月15日，第一版。</p></blockquote>
+
+<!--more-->
+
 
 <h3>给文字加上方块</h3>
 
