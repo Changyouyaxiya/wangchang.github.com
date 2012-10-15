@@ -57,8 +57,8 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about">Photos</a></li>
-  <li><a href="/about">Tags</a></li>
+  <li><a href="/tags">Tags</a></li>
+  <li><a href="/photos">Photos</a></li>
   <li><a href="/about">About Me</a></li>
 </ul>
 
@@ -102,6 +102,10 @@
 <!--more-->
 
 
+<h3>首页文章不全部显示,而显示Read On</h3>
+
+<p>在文章中合适的地方加入<code>&lt;!--more--&gt;</code>就可以了.</p>
+
 <h3>给文字加上方块</h3>
 
 <p>示例效果:<code>这是一个示例效果</code></p>
@@ -114,7 +118,14 @@
 
 <blockquote><p>这是一个引用块</p></blockquote>
 
-<p>有两种实现方式:一个利用markdown自带语法:<code>&gt;号后面紧跟你的文字</code>.一种是利用插件代码.</p>
+<p>有两种实现方式:一个利用markdown自带语法:<code>&gt;号后面紧跟你的文字</code>.一种是利用插件代码(去掉下面的反斜线\).</p>
+
+<pre><code>{\% blockquote %\}
+
+这里是你的引用文字
+
+{\% endblockquote %\}
+</code></pre>
 
 <h3>插入代码</h3>
 
@@ -130,7 +141,16 @@
 这里再空出一行
 </code></pre>
 
-<p>第二个方式是利用octopress的插件实现代码插入,功能更加全面.</p>
+<p>第二个方式是利用octopress的插件实现代码插入,功能更加全面(去掉以下的反斜线\).</p>
+
+<pre><code>{\% codeblock %\}
+
+这里是你的代码
+
+{\% endcodeblock %\}
+</code></pre>
+
+<h3>插入图片</h3>
 </div>
 
 
@@ -180,6 +200,8 @@
         <a class="basic-alignment left" href="/blog/2012/10/setup-vim-for-python-dev/" title="Previous Post: Win7下Vim设置Python开发环境">&laquo; Win7下Vim设置Python开发环境</a>
       
       
+        <a class="basic-alignment right" href="/blog/2012/10/improve-octopress-theme/" title="Next Post: improve octopress theme">improve octopress theme &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -203,6 +225,10 @@
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/10/improve-octopress-theme/">improve octopress theme</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/10/octopress-and-markdown-style/">Octopress中的写作效果</a>
@@ -275,6 +301,12 @@
 
 
 
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3e617f2de1bb9051b3b53a2ac839280c' type='text/javascript'%3E%3C/script%3E"));
+</script>
 
 
 
