@@ -4,6 +4,7 @@ title: "My New Blog Starts"
 date: 2012-09-29 01:46
 comments: true
 categories: 
+- Life
 ---
 
 this is my new blog.i will try some functions:

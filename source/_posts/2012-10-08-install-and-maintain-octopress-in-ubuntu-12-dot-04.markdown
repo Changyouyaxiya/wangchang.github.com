@@ -3,7 +3,9 @@ layout: post
 title: "在Ubuntu 12.04下用Github安装和维护Octopress"
 date: 2012-10-08 20:45
 comments: true
-categories: 
+categories:
+- Life
+- Octopress
 ---
 ##前言##
 其实之前用Github+Octopress架设博客用的是Win7,但是始终解决不了中文问题,今天换回Ubuntu,顺利解决,这里就干脆用Ubtuntu来做一个记录吧.
