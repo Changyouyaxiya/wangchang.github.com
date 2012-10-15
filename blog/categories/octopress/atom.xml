@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | WangChang's Blog]]></title>
   <link href="http://wangchang.github.com/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://wangchang.github.com/"/>
-  <updated>2012-10-15T14:04:24+08:00</updated>
+  <updated>2012-10-15T14:07:14+08:00</updated>
   <id>http://wangchang.github.com/</id>
   <author>
     <name><![CDATA[Wang Chang]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中的写作效果]]></title>
+    <link href="http://wangchang.github.com/blog/2012/10/octopress-and-markdown-style/"/>
+    <updated>2012-10-15T13:29:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/10/octopress-and-markdown-style</id>
+    <content type="html"><![CDATA[<p>关于如何在octopress中使用插件或者markdown语法营造出特定的代码效果,我折腾了好久,网上大多没有比较基础易懂的教程,所以今天对于markdown语法和octopress的写作效果做一个总结,方便以后查找.这其中也包含了对octopress首页中写作插件的翻译.</p>
+
+<blockquote><p>About: OS:Win 7 2012年10月15日，第一版。</p></blockquote>
+
+<h3>给文字加上方块</h3>
+
+<p>示例效果:<code>这是一个示例效果</code></p>
+
+<p>只需要在`这里是你的文字`中加入你的文字就可以了.(用键盘ESC键下面的键包裹文字)</p>
+
+<h3>引用块</h3>
+
+<p>示例效果:</p>
+
+<blockquote><p>这是一个引用块</p></blockquote>
+
+<p>有两种实现方式:一个利用markdown自带语法:<code>&gt;号后面紧跟你的文字</code>.一种是利用插件代码.</p>
+
+<h3>插入代码</h3>
+
+<p>示例效果:</p>
+
+<pre><code>这里是代码插入示例
+</code></pre>
+
+<p>也是两种实现方式,一是利用markdown,方法是空出一行,四个空格,再加代码内容,如下:</p>
+
+<pre><code>这里空出一行
+四个空格后跟代码块
+这里再空出一行
+</code></pre>
+
+<p>第二个方式是利用octopress的插件实现代码插入,功能更加全面.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[在Ubuntu 12.04下用Github安装和维护Octopress]]></title>
