@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SEO | WangChang's Blog]]></title>
+  <link href="http://wangchang.github.com/blog/categories/seo/atom.xml" rel="self"/>
+  <link href="http://wangchang.github.com/"/>
+  <updated>2012-10-16T10:35:10+08:00</updated>
+  <id>http://wangchang.github.com/</id>
+  <author>
+    <name><![CDATA[Wang Chang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在用Github搭建的Octopress博客中安装百度统计]]></title>
+    <link href="http://wangchang.github.com/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/"/>
+    <updated>2012-10-15T20:38:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages</id>
+    <content type="html"><![CDATA[<p>我发现用Github搭建的octopress有个缺点就是貌似不怎么容易被搜索引擎检索到,这个先不管了,以后再折腾.这里主要记录一下如何在octopress中安装百度统计.因为百度统计不是octopress默认支持的,不像Google分析那样直接改了配置就能用,所以需要手动安装.</p>
+
+<blockquote><p>OS:Ubuntu 12.04 2012年10月15日 第一版</p></blockquote>
+
+<!--more-->
+
+
+<h2>进入百度统计,添加站点,获取站点代码.</h2>
+
+<p>主要是一段javascript的代码,在有访问时通过这段代码将信息发送给百度统计的分析端.我的代码如下:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">_bdhmProtocol</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;https:&quot;</span> <span class="o">==</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot; https://&quot;</span> <span class="o">:</span> <span class="s2">&quot; http://&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">unescape</span><span class="p">(</span><span class="s2">&quot;%3Cscript src=&#39;&quot;</span> <span class="o">+</span> <span class="nx">_bdhmProtocol</span> <span class="o">+</span> <span class="s2">&quot;hm.baidu.com/h.js%3F3e617f2de1bb9051b3b53a2ac839280c&#39; type=&#39;text/javascript&#39;%3E%3C/script%3E&quot;</span><span class="p">));</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>添加代码到Octopres</h2>
+
+<p>因为Octopress不是纯html,用了CSS,所以在<code>source/index.html</code>中没有Body段,整个界面大致分为header,navgiation,body,footer四个部分,所以我们把代码放在footber里面合适一点.进入<code>source/_includes</code>目录,新建文件<code>baidu_analytics.html</code>,在其中复制之前得到的统计代码.</p>
+
+<p>随后更改<code>source/_includes</code>下的<code>after_footer.html</code>文件,增加一行:
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>{\% include baidu_analytics.html %} ##去掉反斜线\&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>测试</h2>
+
+<p>这里已经安装完成,进入<a href="http://tongji.baidu.com">百度统计后台</a>进行代码安装检查,检测到代码安装成功就OK了.</p>
+]]></content>
+  </entry>
+  
+</feed>

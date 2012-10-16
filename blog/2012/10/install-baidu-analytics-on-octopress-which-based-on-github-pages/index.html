@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>在Ubuntu 12.04下用Github安装和维护Octopress - WangChang's Blog</title>
+  <title>在用Github搭建的Octopress博客中安装百度统计 - WangChang's Blog</title>
   <meta name="author" content="Wang Chang">
 
   
-  <meta name="description" content="前言 其实之前用Github+Octopress架设博客用的是Win7,但是始终解决不了中文问题,今天换回Ubuntu,顺利解决,这里就干脆用Ubtuntu来做一个记录吧. 1 安装Ruby环境 利用RVM安装ruby,RVM管理Ruby的话感觉更爽一点,自己也懒得编译了. 1
-2
-root@ &hellip;">
+  <meta name="description" content="我发现用Github搭建的octopress有个缺点就是貌似不怎么容易被搜索引擎检索到,这个先不管了,以后再折腾.这里主要记录一下如何在octopress中安装百度统计.因为百度统计不是octopress默认支持的,不像Google分析那样直接改了配置就能用,所以需要手动安装. OS:Ubuntu &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ root@ &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://wangchang.github.com/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/">
+  <link rel="canonical" href="http://wangchang.github.com/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -72,7 +70,7 @@ root@ &hellip;">
   
   <header>
     
-      <h1 class="entry-title">在Ubuntu 12.04下用Github安装和维护Octopress</h1>
+      <h1 class="entry-title">在用Github搭建的Octopress博客中安装百度统计</h1>
     
     
       <p class="meta">
@@ -88,7 +86,7 @@ root@ &hellip;">
   
 
 
-<time datetime="2012-10-08T20:45:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
+<time datetime="2012-10-15T20:38:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -97,90 +95,41 @@ root@ &hellip;">
   </header>
 
 
-<div class="entry-content"><h2>前言</h2>
+<div class="entry-content"><p>我发现用Github搭建的octopress有个缺点就是貌似不怎么容易被搜索引擎检索到,这个先不管了,以后再折腾.这里主要记录一下如何在octopress中安装百度统计.因为百度统计不是octopress默认支持的,不像Google分析那样直接改了配置就能用,所以需要手动安装.</p>
 
-<p>其实之前用Github+Octopress架设博客用的是Win7,但是始终解决不了中文问题,今天换回Ubuntu,顺利解决,这里就干脆用Ubtuntu来做一个记录吧.</p>
-
-<h2>1 安装Ruby环境</h2>
-
-<p>利用RVM安装ruby,RVM管理Ruby的话感觉更爽一点,自己也懒得编译了.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:apt-get install curl git
-</span><span class='line'>root@Node1:curl -L get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure>
-
-
-
+<blockquote><p>OS:Ubuntu 12.04 2012年10月15日 第一版</p></blockquote>
 
 <!--more-->
 
 
-<p>根据RVM的要求,还需要将用户加入组以及更新配置.</p>
+<h2>进入百度统计,添加站点,获取站点代码.</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:gpasswd -a root rvm
-</span><span class='line'>root@Node1:source /etc/profile.d/rvm.sh</span></code></pre></td></tr></table></div></figure>
+<p>主要是一段javascript的代码,在有访问时通过这段代码将信息发送给百度统计的分析端.我的代码如下:</p>
 
-
-<p>安装编译依赖以及Ruby</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:apt-get install build-essential bison openssl libreadline6 libreadline6-dev curl git-core zlib1g
-</span><span class='line'>zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf
-</span><span class='line'>root@Node1:rvm install 1.9.2</span></code></pre></td></tr></table></div></figure>
-
-
-<p>OK,环境安装完成.</p>
-
-<h2>2 安装Octopress以及组件</h2>
-
-<p>先通过git克隆octopress的代码.再安装相应的组件.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress
-</span><span class='line'>cd octopress
-</span><span class='line'>gem install bundler
-</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+</span><span class='line'><span class="kd">var</span> <span class="nx">_bdhmProtocol</span> <span class="o">=</span> <span class="p">((</span><span class="s2">&quot;https:&quot;</span> <span class="o">==</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">protocol</span><span class="p">)</span> <span class="o">?</span> <span class="s2">&quot; https://&quot;</span> <span class="o">:</span> <span class="s2">&quot; http://&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">unescape</span><span class="p">(</span><span class="s2">&quot;%3Cscript src=&#39;&quot;</span> <span class="o">+</span> <span class="nx">_bdhmProtocol</span> <span class="o">+</span> <span class="s2">&quot;hm.baidu.com/h.js%3F3e617f2de1bb9051b3b53a2ac839280c&#39; type=&#39;text/javascript&#39;%3E%3C/script%3E&quot;</span><span class="p">));</span>
+</span><span class='line'><span class="o">&lt;</span><span class="err">/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>然后安装默认主题:</p>
+<h2>添加代码到Octopres</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+<p>因为Octopress不是纯html,用了CSS,所以在<code>source/index.html</code>中没有Body段,整个界面大致分为header,navgiation,body,footer四个部分,所以我们把代码放在footber里面合适一点.进入<code>source/_includes</code>目录,新建文件<code>baidu_analytics.html</code>,在其中复制之前得到的统计代码.</p>
 
-
-<h2>3 设置Github</h2>
-
-<p>这一步是以后维护的关键主要有以下步骤:</p>
+<p>随后更改<code>source/_includes</code>下的<code>after_footer.html</code>文件,增加一行:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages 设置于github的关联
-</span><span class='line'>rake generate 生成静态页面
-</span><span class='line'>rake deploy 向github发送页面</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{\% include baidu_analytics.html %\} ##去掉反斜线\</span></code></pre></td></tr></table></div></figure>
 
 
-<p>注意,所有的操作都应该是在octopress的源码中进行,rake deploy只是将生成的静态页面发送到github的master分支.,所以最后我们需要将源码保存为source分支.</p>
+<h2>测试</h2>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git status
-</span><span class='line'>git add .
-</span><span class='line'>git commit -m 'commit message'
-</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以后维护的时候记得需要先checkout到source分支才行.</p>
+<p>这里已经安装完成,进入<a href="http://tongji.baidu.com">百度统计后台</a>进行代码安装检查,检测到代码安装成功就OK了.</p>
 </div>
 
 
@@ -203,12 +152,12 @@ root@ &hellip;">
   
 
 
-<time datetime="2012-10-08T20:45:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
+<time datetime="2012-10-15T20:38:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/life/'>Life</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>, <a class='category' href='/blog/categories/seo/'>SEO</a>
   
 </span>
 
@@ -227,10 +176,8 @@ root@ &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/09/my-new-blog-starts/" title="Previous Post: My New Blog Starts">&laquo; My New Blog Starts</a>
+        <a class="basic-alignment left" href="/blog/2012/10/improve-octopress-theme/" title="Previous Post: improve octopress theme">&laquo; improve octopress theme</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/10/setup-vim-for-python-dev/" title="Next Post: Win7下Vim设置Python开发环境">Win7下Vim设置Python开发环境 &raquo;</a>
       
     </p>
   </footer>
@@ -319,8 +266,8 @@ root@ &hellip;">
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://wangchang.github.com/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/';
-        var disqus_url = 'http://wangchang.github.com/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/';
+        var disqus_identifier = 'http://wangchang.github.com/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/';
+        var disqus_url = 'http://wangchang.github.com/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/';
         var disqus_script = 'embed.js';
       
     (function () {
