@@ -4,7 +4,7 @@
   <title><![CDATA[WangChang's Blog]]></title>
   <link href="http://wangchang.github.com/atom.xml" rel="self"/>
   <link href="http://wangchang.github.com/"/>
-  <updated>2012-10-21T13:18:57+08:00</updated>
+  <updated>2012-10-21T13:59:17+08:00</updated>
   <id>http://wangchang.github.com/</id>
   <author>
     <name><![CDATA[Wang Chang]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中文章信息头的最好形式]]></title>
+    <link href="http://wangchang.github.com/blog/2012/10/best-format-for-octopress-article/"/>
+    <updated>2012-10-21T13:36:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/10/best-format-for-octopress-article</id>
+    <content type="html"><![CDATA[<p>主要记录一下octopres中编辑文章头信息最好的格式。</p>
+
+<blockquote><p>OS:Ubuntu12.04 2012年10月21日 第一版</p></blockquote>
+
+<figure class='code'><figcaption><span>best format - awesome.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">---</span>
+</span><span class='line'><span class="n">layout</span><span class="p">:</span> <span class="n">post</span>
+</span><span class='line'><span class="n">title</span><span class="p">:</span> <span class="s2">&quot;SEO for Octopress&quot;</span>  <span class="c1">#文章标题</span>
+</span><span class='line'><span class="n">date</span><span class="p">:</span> <span class="mi">2012</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">55</span>  <span class="c1">#写作时间</span>
+</span><span class='line'><span class="n">comments</span><span class="p">:</span> <span class="kp">true</span> <span class="c1">#允许评论</span>
+</span><span class='line'><span class="n">categories</span><span class="p">:</span> <span class="o">[</span><span class="n">seo</span><span class="p">,</span><span class="n">octopress</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.]</span> <span class="c1">#多个分类标记</span>
+</span><span class='line'><span class="n">tags</span><span class="p">:</span> <span class="o">[</span><span class="n">key1</span><span class="p">,</span><span class="n">key2</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.]</span> <span class="c1">#支持多个tag的功能</span>
+</span><span class='line'><span class="n">keywords</span><span class="p">:</span> <span class="n">seo</span><span class="p">,</span><span class="n">octopress</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="c1">#关键字</span>
+</span><span class='line'><span class="n">description</span><span class="p">:</span> <span class="err">“</span><span class="no">How</span> <span class="n">to</span> <span class="n">optimize</span> <span class="no">Octopress</span> <span class="k">for</span> <span class="no">SEO</span><span class="p">,</span><span class="no">Heroku</span><span class="err">”</span> <span class="c1">#文章描述，用于搜索引擎显示的内容</span>
+</span><span class='line'><span class="o">---</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
+
+
+<p>其中，catagoies有两种方式：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>categories: [cate1,cate2,...]
+</span><span class='line'>
+</span><span class='line'>categories:
+</span><span class='line'>- cate1
+</span><span class='line'>- cate2
+</span><span class='line'>- ...</span></code></pre></td></tr></table></div></figure>
+
+
+<p>tags的也有如上两种方式，<em>至于keywords项的作用，还暂时不知道</em>,但是按照我目前的想法，categories支持多个以后，和tags的功能的功能重合了，所以tags可以不要，倒是这个description相比较重要，有利于SEO，关于SEO可以参考：</p>
+
+<blockquote><p><a href="http://zyzhang.github.com/blog/2012/09/03/blog-with-github-pages-and-jekyll-seo/">Github Pages + Jekyll搭建博客之SEO</a></p>
+
+<p><a href="http://www.yatishmehta.in/seo-for-octopress">SEO for Octopress,Heroku</a></p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[add tags for octopress]]></title>
+    <link href="http://wangchang.github.com/blog/2012/10/add-tags-for-octopress/"/>
+    <updated>2012-10-21T13:27:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/10/add-tags-for-octopress</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[在用Github搭建的Octopress博客中安装百度统计]]></title>

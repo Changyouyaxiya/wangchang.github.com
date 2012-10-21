@@ -7,13 +7,11 @@
   <meta name="baidu-site-verification" content="FdwixqtrKX9ia1cZ" />
 
   <meta charset="utf-8">
-  <title>在Ubuntu 12.04下用Github安装和维护Octopress - WangChang's Blog</title>
+  <title>Octopress中文章信息头的最好形式 - WangChang's Blog</title>
   <meta name="author" content="Wang Chang">
 
   
-  <meta name="description" content="前言 其实之前用Github+Octopress架设博客用的是Win7,但是始终解决不了中文问题,今天换回Ubuntu,顺利解决,这里就干脆用Ubtuntu来做一个记录吧. 1 安装Ruby环境 利用RVM安装ruby,RVM管理Ruby的话感觉更爽一点,自己也懒得编译了. 1
-2
-root@ &hellip;">
+  <meta name="description" content="在octopress中关于文章头信息的最佳格式">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +20,7 @@ root@ &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://wangchang.github.com/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/">
+  <link rel="canonical" href="http://wangchang.github.com/blog/2012/10/best-format-for-octopress-article/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -74,7 +72,7 @@ root@ &hellip;">
   
   <header>
     
-      <h1 class="entry-title">在Ubuntu 12.04下用Github安装和维护Octopress</h1>
+      <h1 class="entry-title">Octopress中文章信息头的最好形式</h1>
     
     
       <p class="meta">
@@ -90,7 +88,7 @@ root@ &hellip;">
   
 
 
-<time datetime="2012-10-08T20:45:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
+<time datetime="2012-10-21T13:36:00+08:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -99,18 +97,32 @@ root@ &hellip;">
   </header>
 
 
-<div class="entry-content"><h2>前言</h2>
+<div class="entry-content"><p>主要记录一下octopres中编辑文章头信息最好的格式。</p>
 
-<p>其实之前用Github+Octopress架设博客用的是Win7,但是始终解决不了中文问题,今天换回Ubuntu,顺利解决,这里就干脆用Ubtuntu来做一个记录吧.</p>
+<blockquote><p>OS:Ubuntu12.04 2012年10月21日 第一版</p></blockquote>
 
-<h2>1 安装Ruby环境</h2>
-
-<p>利用RVM安装ruby,RVM管理Ruby的话感觉更爽一点,自己也懒得编译了.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>best format - awesome.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:apt-get install curl git
-</span><span class='line'>root@Node1:curl -L get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">---</span>
+</span><span class='line'><span class="n">layout</span><span class="p">:</span> <span class="n">post</span>
+</span><span class='line'><span class="n">title</span><span class="p">:</span> <span class="s2">&quot;SEO for Octopress&quot;</span>  <span class="c1">#文章标题</span>
+</span><span class='line'><span class="n">date</span><span class="p">:</span> <span class="mi">2012</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">55</span>  <span class="c1">#写作时间</span>
+</span><span class='line'><span class="n">comments</span><span class="p">:</span> <span class="kp">true</span> <span class="c1">#允许评论</span>
+</span><span class='line'><span class="n">categories</span><span class="p">:</span> <span class="o">[</span><span class="n">seo</span><span class="p">,</span><span class="n">octopress</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.]</span> <span class="c1">#多个分类标记</span>
+</span><span class='line'><span class="n">tags</span><span class="p">:</span> <span class="o">[</span><span class="n">key1</span><span class="p">,</span><span class="n">key2</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.]</span> <span class="c1">#支持多个tag的功能</span>
+</span><span class='line'><span class="n">keywords</span><span class="p">:</span> <span class="n">seo</span><span class="p">,</span><span class="n">octopress</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="c1">#关键字</span>
+</span><span class='line'><span class="n">description</span><span class="p">:</span> <span class="err">“</span><span class="no">How</span> <span class="n">to</span> <span class="n">optimize</span> <span class="no">Octopress</span> <span class="k">for</span> <span class="no">SEO</span><span class="p">,</span><span class="no">Heroku</span><span class="err">”</span> <span class="c1">#文章描述，用于搜索引擎显示的内容</span>
+</span><span class='line'><span class="o">---</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 
@@ -118,71 +130,27 @@ root@ &hellip;">
 <!--more-->
 
 
-<p>根据RVM的要求,还需要将用户加入组以及更新配置.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:gpasswd -a root rvm
-</span><span class='line'>root@Node1:source /etc/profile.d/rvm.sh</span></code></pre></td></tr></table></div></figure>
-
-
-<p>安装编译依赖以及Ruby</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:apt-get install build-essential bison openssl libreadline6 libreadline6-dev curl git-core zlib1g
-</span><span class='line'>zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf
-</span><span class='line'>root@Node1:rvm install 1.9.2</span></code></pre></td></tr></table></div></figure>
-
-
-<p>OK,环境安装完成.</p>
-
-<h2>2 安装Octopress以及组件</h2>
-
-<p>先通过git克隆octopress的代码.再安装相应的组件.</p>
+<p>其中，catagoies有两种方式：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git clone git://github.com/imathis/octopress.git octopress
-</span><span class='line'>cd octopress
-</span><span class='line'>gem install bundler
-</span><span class='line'>bundle install</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>categories: [cate1,cate2,...]
+</span><span class='line'>
+</span><span class='line'>categories:
+</span><span class='line'>- cate1
+</span><span class='line'>- cate2
+</span><span class='line'>- ...</span></code></pre></td></tr></table></div></figure>
 
 
-<p>然后安装默认主题:</p>
+<p>tags的也有如上两种方式，<em>至于keywords项的作用，还暂时不知道</em>,但是按照我目前的想法，categories支持多个以后，和tags的功能的功能重合了，所以tags可以不要，倒是这个description相比较重要，有利于SEO，关于SEO可以参考：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake install</span></code></pre></td></tr></table></div></figure>
+<blockquote><p><a href="http://zyzhang.github.com/blog/2012/09/03/blog-with-github-pages-and-jekyll-seo/">Github Pages + Jekyll搭建博客之SEO</a></p>
 
-
-<h2>3 设置Github</h2>
-
-<p>这一步是以后维护的关键主要有以下步骤:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rake setup_github_pages 设置于github的关联
-</span><span class='line'>rake generate 生成静态页面
-</span><span class='line'>rake deploy 向github发送页面</span></code></pre></td></tr></table></div></figure>
-
-
-<p>注意,所有的操作都应该是在octopress的源码中进行,rake deploy只是将生成的静态页面发送到github的master分支.,所以最后我们需要将源码保存为source分支.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>git status
-</span><span class='line'>git add .
-</span><span class='line'>git commit -m 'commit message'
-</span><span class='line'>git push origin source</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以后维护的时候记得需要先checkout到source分支才行.</p>
+<p><a href="http://www.yatishmehta.in/seo-for-octopress">SEO for Octopress,Heroku</a></p></blockquote>
 </div>
 
 
@@ -205,12 +173,12 @@ root@ &hellip;">
   
 
 
-<time datetime="2012-10-08T20:45:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
+<time datetime="2012-10-21T13:36:00+08:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/life/'>Life</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/octopress/'>octopress</a>
   
 </span>
 
@@ -229,10 +197,8 @@ root@ &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/09/my-new-blog-starts/" title="Previous Post: My New Blog Starts">&laquo; My New Blog Starts</a>
+        <a class="basic-alignment left" href="/blog/2012/10/add-tags-for-octopress/" title="Previous Post: add tags for octopress">&laquo; add tags for octopress</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/10/setup-vim-for-python-dev/" title="Next Post: Win7下Vim设置Python开发环境">Win7下Vim设置Python开发环境 &raquo;</a>
       
     </p>
   </footer>
@@ -321,8 +287,8 @@ root@ &hellip;">
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://wangchang.github.com/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/';
-        var disqus_url = 'http://wangchang.github.com/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/';
+        var disqus_identifier = 'http://wangchang.github.com/blog/2012/10/best-format-for-octopress-article/';
+        var disqus_url = 'http://wangchang.github.com/blog/2012/10/best-format-for-octopress-article/';
         var disqus_script = 'embed.js';
       
     (function () {
