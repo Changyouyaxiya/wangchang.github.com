@@ -4,7 +4,7 @@
   <title><![CDATA[Category: sqlalchemy | WangChang's Blog]]></title>
   <link href="http://wangchang.github.com/blog/categories/sqlalchemy/atom.xml" rel="self"/>
   <link href="http://wangchang.github.com/"/>
-  <updated>2012-11-19T10:37:51+08:00</updated>
+  <updated>2012-11-19T11:07:59+08:00</updated>
   <id>http://wangchang.github.com/</id>
   <author>
     <name><![CDATA[Wang Chang]]></name>
@@ -24,6 +24,9 @@
 使用sqlite或者mysql来练习
 主要是参照官方文档，以及实际的使用经验
 OS:Win7 or Ubuntu12.04</p></blockquote>
+
+<!--more-->
+
 
 <h2>Sqlalchemy的架构图</h2>
 

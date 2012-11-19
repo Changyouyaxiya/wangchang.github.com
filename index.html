@@ -109,36 +109,12 @@ OS:Win7 or &hellip;">
 主要是参照官方文档，以及实际的使用经验
 OS:Win7 or Ubuntu12.04</p></blockquote>
 
-<h2>Sqlalchemy的架构图</h2>
-
-<p>关于这个架构图，文档解释如下：</p>
-
-<blockquote><p>InSQLAlchemy ORM, the Object Relational Mapper is introduced and fully described. New users should begin with theObject Relational Tutorial.</p>
-
-<p>InSQLAlchemy Core, the breadth of SQLAlchemy’s SQL and database integration and description services are doc-umented, the core of which is the SQL Expression language. The SQL Expression Language is a toolkit all its own, independent of the ORM package, which can be used to construct manipulable SQL expressions which can be programmatically constructed, modified, and executed, returning cursor-like result sets.</p></blockquote>
-
-<h2>环境准备</h2>
-
-<p>pip install 或者 &#8216;easy install&#8217;都可以</p>
-
-<h1>#</h1>
-
-<p>和数据库连接，需要一个engine！</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>from sqlalchemy import create_engine
-</span><span class='line'>engine = create_engine(’sqlite:///:memory:’, echo=True)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>引擎的方法：
-engine.execute(&#8220;select 1&#8221;).scalar() 直接执行sql语句。
-在使用ORM中，应该有两步，一是描述我们要处理的数据库，而是将我们的类和数据库中的table关联起来。在sqlalchemy中，这两步合二为一，使用declarative机制，在这个机制中，所有需要映射的类都是根据一个维护分类和映射关系的基类来的，这个基类就是declarative base class。</p>
-
-<p>from sqlalchemy.ext.declarative import declarative_base
-Base = declarative_base() #创建这个base类</p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/11/sqlalchemy-tutorial-1/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -149,7 +125,7 @@ Base = declarative_base() #创建这个base类</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/"></a></h1>
+      <h1 class="entry-title"><a href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/">在Ubuntu12.04下关闭触摸板</a></h1>
     
     
       <p class="meta">
@@ -181,44 +157,6 @@ Base = declarative_base() #创建这个base类</p>
 
 
 
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/this-is-good/">This Is Good</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-31T15:18:00+08:00" pubdate data-updated="true">Oct 31<span>st</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/this-is-good/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>this is good</p>
 </div>
   
   
@@ -563,9 +501,65 @@ Base = declarative_base() #创建这个base类</p>
 
     </article>
   
-  <div class="pagination">
+  
+    <article>
+      
+  <header>
     
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+      <h1 class="entry-title"><a href="/blog/2012/09/my-new-blog-starts/">My New Blog Starts</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-29T01:46:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/09/my-new-blog-starts/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>this is my new blog.i will try some functions:</p>
+
+<p>this is code block</p>
+
+<figure class='code'><figcaption><span>This is code block </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Awesome code snippet</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://placekitten.com/890/280">
+<img src="/images/2012-09-29-my-new-blog-starts-1.jpg"></p>
+
+<blockquote><p>Last night I lay in bed looking up at the stars in the sky and I thought to myself, where the heck is the ceiling.</p></blockquote>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/09/my-new-blog-starts/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -588,11 +582,7 @@ Base = declarative_base() #创建这个base类</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/"></a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/this-is-good/">this is good</a>
+        <a href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/">在Ubuntu12.04下关闭触摸板</a>
       </li>
     
       <li class="post">
@@ -605,6 +595,10 @@ Base = declarative_base() #创建这个base类</p>
     
       <li class="post">
         <a href="/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/">在用Github搭建的Octopress博客中安装百度统计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/improve-octopress-theme/">improve octopress theme</a>
       </li>
     
   </ul>
