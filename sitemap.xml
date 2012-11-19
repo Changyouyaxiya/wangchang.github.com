@@ -37,6 +37,18 @@
         <lastmod>2012-10-21T13:59:35+08:00</lastmod>
     </url>
     <url>
+        <loc>http://wangchang.github.com/blog/2012/10/this-is-good/</loc>
+        <lastmod>2012-10-31T15:18:53+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://wangchang.github.com/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/</loc>
+        <lastmod>2012-11-02T10:26:13+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/</loc>
+        <lastmod>2012-11-19T10:37:46+08:00</lastmod>
+    </url>
+    <url>
         <loc>http://wangchang.github.com/about/</loc>
         <lastmod>2012-10-16T09:44:55+08:00</lastmod>
     </url>
@@ -46,7 +58,7 @@
     </url>
     <url>
         <loc>http://wangchang.github.com/blog/archives/</loc>
-        <lastmod>2012-10-21T13:59:35+08:00</lastmod>
+        <lastmod>2012-11-19T10:37:46+08:00</lastmod>
     </url>
     <url>
         <loc>http://wangchang.github.com/photos/</loc>
@@ -58,6 +70,6 @@
     </url>
     <url>
         <loc>http://wangchang.github.com/</loc>
-        <lastmod>2012-10-21T13:59:35+08:00</lastmod>
+        <lastmod>2012-11-19T10:37:46+08:00</lastmod>
     </url>
 </urlset>

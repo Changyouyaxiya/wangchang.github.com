@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Pythonthon | WangChang's Blog]]></title>
+  <link href="http://wangchang.github.com/blog/categories/pythonthon/atom.xml" rel="self"/>
+  <link href="http://wangchang.github.com/"/>
+  <updated>2012-11-19T10:37:51+08:00</updated>
+  <id>http://wangchang.github.com/</id>
+  <author>
+    <name><![CDATA[Wang Chang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Python Sqlalchemy指南(一)]]></title>
+    <link href="http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/"/>
+    <updated>2012-11-14T15:11:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1</id>
+    <content type="html"><![CDATA[<p>最近项目需要学习sqlalchemy，对于这个神器，网上的教程实在太少了，而且版本太老。于是只好自己慢慢读，以此系列做一个记录的吧！</p>
+
+<blockquote><p>Sqlalchemy version:0.8.b1
+使用sqlite或者mysql来练习
+主要是参照官方文档，以及实际的使用经验
+OS:Win7 or Ubuntu12.04</p></blockquote>
+
+<h2>Sqlalchemy的架构图</h2>
+
+<p>关于这个架构图，文档解释如下：</p>
+
+<blockquote><p>InSQLAlchemy ORM, the Object Relational Mapper is introduced and fully described. New users should begin with theObject Relational Tutorial.</p>
+
+<p>InSQLAlchemy Core, the breadth of SQLAlchemy’s SQL and database integration and description services are doc-umented, the core of which is the SQL Expression language. The SQL Expression Language is a toolkit all its own, independent of the ORM package, which can be used to construct manipulable SQL expressions which can be programmatically constructed, modified, and executed, returning cursor-like result sets.</p></blockquote>
+
+<h2>环境准备</h2>
+
+<p>pip install 或者 'easy install'都可以</p>
+
+<h1>#</h1>
+
+<p>和数据库连接，需要一个engine！
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from sqlalchemy import create_engine
+</span><span class='line'>engine = create_engine(’sqlite:///:memory:’, echo=True)</span></code></pre></td></tr></table></div></figure></notextile></div>
+引擎的方法：
+engine.execute("select 1").scalar() 直接执行sql语句。
+在使用ORM中，应该有两步，一是描述我们要处理的数据库，而是将我们的类和数据库中的table关联起来。在sqlalchemy中，这两步合二为一，使用declarative机制，在这个机制中，所有需要映射的类都是根据一个维护分类和映射关系的基类来的，这个基类就是declarative base class。</p>
+
+<p>from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base() #创建这个base类</p>
+]]></content>
+  </entry>
+  
+</feed>

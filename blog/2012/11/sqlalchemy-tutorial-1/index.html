@@ -7,11 +7,14 @@
   <meta name="baidu-site-verification" content="FdwixqtrKX9ia1cZ" />
 
   <meta charset="utf-8">
-  <title>Octopress中的写作效果 - WangChang's Blog</title>
+  <title>Python Sqlalchemy指南(一) - WangChang's Blog</title>
   <meta name="author" content="Wang Chang">
 
   
-  <meta name="description" content="关于如何在octopress中使用插件或者markdown语法营造出特定的代码效果,我折腾了好久,网上大多没有比较基础易懂的教程,所以今天对于markdown语法和octopress的写作效果做一个总结,方便以后查找.这其中也包含了对octopress首页中写作插件的翻译. About: OS: &hellip;">
+  <meta name="description" content="最近项目需要学习sqlalchemy，对于这个神器，网上的教程实在太少了，而且版本太老。于是只好自己慢慢读，以此系列做一个记录的吧！ Sqlalchemy version:0.8.b1
+使用sqlite或者mysql来练习
+主要是参照官方文档，以及实际的使用经验
+OS:Win7 or &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +23,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://wangchang.github.com/blog/2012/10/octopress-and-markdown-style/">
+  <link rel="canonical" href="http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -71,7 +74,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress中的写作效果</h1>
+      <h1 class="entry-title">Python Sqlalchemy指南(一)</h1>
     
     
       <p class="meta">
@@ -87,7 +90,7 @@
   
 
 
-<time datetime="2012-10-15T13:29:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
+<time datetime="2012-11-14T15:11:00+08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -96,62 +99,41 @@
   </header>
 
 
-<div class="entry-content"><p>关于如何在octopress中使用插件或者markdown语法营造出特定的代码效果,我折腾了好久,网上大多没有比较基础易懂的教程,所以今天对于markdown语法和octopress的写作效果做一个总结,方便以后查找.这其中也包含了对octopress首页中写作插件的翻译.</p>
+<div class="entry-content"><p>最近项目需要学习sqlalchemy，对于这个神器，网上的教程实在太少了，而且版本太老。于是只好自己慢慢读，以此系列做一个记录的吧！</p>
 
-<blockquote><p>About: OS:Win 7 2012年10月15日，第一版。</p></blockquote>
+<blockquote><p>Sqlalchemy version:0.8.b1
+使用sqlite或者mysql来练习
+主要是参照官方文档，以及实际的使用经验
+OS:Win7 or Ubuntu12.04</p></blockquote>
 
-<!--more-->
+<h2>Sqlalchemy的架构图</h2>
+
+<p>关于这个架构图，文档解释如下：</p>
+
+<blockquote><p>InSQLAlchemy ORM, the Object Relational Mapper is introduced and fully described. New users should begin with theObject Relational Tutorial.</p>
+
+<p>InSQLAlchemy Core, the breadth of SQLAlchemy’s SQL and database integration and description services are doc-umented, the core of which is the SQL Expression language. The SQL Expression Language is a toolkit all its own, independent of the ORM package, which can be used to construct manipulable SQL expressions which can be programmatically constructed, modified, and executed, returning cursor-like result sets.</p></blockquote>
+
+<h2>环境准备</h2>
+
+<p>pip install 或者 &#8216;easy install&#8217;都可以</p>
+
+<h1>#</h1>
+
+<p>和数据库连接，需要一个engine！</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from sqlalchemy import create_engine
+</span><span class='line'>engine = create_engine(’sqlite:///:memory:’, echo=True)</span></code></pre></td></tr></table></div></figure>
 
 
-<h3>首页文章不全部显示,而显示Read On</h3>
+<p>引擎的方法：
+engine.execute(&#8220;select 1&#8221;).scalar() 直接执行sql语句。
+在使用ORM中，应该有两步，一是描述我们要处理的数据库，而是将我们的类和数据库中的table关联起来。在sqlalchemy中，这两步合二为一，使用declarative机制，在这个机制中，所有需要映射的类都是根据一个维护分类和映射关系的基类来的，这个基类就是declarative base class。</p>
 
-<p>在文章中合适的地方加入<code>&lt;!--more--&gt;</code>就可以了.</p>
-
-<h3>给文字加上方块</h3>
-
-<p>示例效果:<code>这是一个示例效果</code></p>
-
-<p>只需要在`这里是你的文字`中加入你的文字就可以了.(用键盘ESC键下面的键包裹文字)</p>
-
-<h3>引用块</h3>
-
-<p>示例效果:</p>
-
-<blockquote><p>这是一个引用块</p></blockquote>
-
-<p>有两种实现方式:一个利用markdown自带语法:<code>&gt;号后面紧跟你的文字</code>.一种是利用插件代码(去掉下面的反斜线\).</p>
-
-<pre><code>{\% blockquote %\}
-
-这里是你的引用文字
-
-{\% endblockquote %\}
-</code></pre>
-
-<h3>插入代码</h3>
-
-<p>示例效果:</p>
-
-<pre><code>这里是代码插入示例
-</code></pre>
-
-<p>也是两种实现方式,一是利用markdown,方法是空出一行,四个空格,再加代码内容,如下:</p>
-
-<pre><code>这里空出一行
-四个空格后跟代码块
-这里再空出一行
-</code></pre>
-
-<p>第二个方式是利用octopress的插件实现代码插入,功能更加全面(去掉以下的反斜线\).</p>
-
-<pre><code>{\% codeblock %\}
-
-这里是你的代码
-
-{\% endcodeblock %\}
-</code></pre>
-
-<h3>插入图片</h3>
+<p>from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base() #创建这个base类</p>
 </div>
 
 
@@ -174,12 +156,12 @@
   
 
 
-<time datetime="2012-10-15T13:29:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
+<time datetime="2012-11-14T15:11:00+08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/markdown/'>Markdown</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/pythonthon/'>Pythonthon</a>, <a class='category' href='/blog/categories/sqlalchemy/'>sqlalchemy</a>
   
 </span>
 
@@ -198,10 +180,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/10/setup-vim-for-python-dev/" title="Previous Post: Win7下Vim设置Python开发环境">&laquo; Win7下Vim设置Python开发环境</a>
+        <a class="basic-alignment left" href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/" title="Previous Post: ">&laquo; </a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/10/improve-octopress-theme/" title="Next Post: improve octopress theme">improve octopress theme &raquo;</a>
       
     </p>
   </footer>
@@ -290,8 +270,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://wangchang.github.com/blog/2012/10/octopress-and-markdown-style/';
-        var disqus_url = 'http://wangchang.github.com/blog/2012/10/octopress-and-markdown-style/';
+        var disqus_identifier = 'http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/';
+        var disqus_url = 'http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/';
         var disqus_script = 'embed.js';
       
     (function () {
