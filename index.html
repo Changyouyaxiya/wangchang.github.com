@@ -11,9 +11,7 @@
   <meta name="author" content="Wang Chang">
 
   
-  <meta name="description" content="Paste.Deploy主要是用来载入WSGI中的Web App使用，其核心函数是loadapp(),下文中PD就指代Paste.Deploy。 OS:Ubuntu12.04 2012年11月17日 第一版
-主要是对官方文档的一个翻译，外加自己的一些理解
-本文的Paste. &hellip;">
+  <meta name="description" content="上一节中梳理了Python Paste中Deploy机制的概念，这一节就做一点小小的实践。首先，我们举一个使用了Deploy的例子，这个就是OpenStack的Quantum组件的WSGI部分。我们先来看关于WSGI部分的配置文件，以ini后缀，那么就是api-paste.ini文件， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +68,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/python-paste-one-deploy-2/">Python.Paste指南之Deploy(2)-实践</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-20T10:39:00+08:00" pubdate data-updated="true">Nov 20<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/python-paste-one-deploy-2/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>上一节中梳理了Python Paste中Deploy机制的概念，这一节就做一点小小的实践。首先，我们举一个使用了Deploy的例子，这个就是OpenStack的Quantum组件的WSGI部分。我们先来看关于WSGI部分的配置文件，以ini后缀，那么就是api-paste.ini文件，决定了API的处理流程。我加入了适当的注释。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/11/python-paste-one-deploy-2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/git-origin-reset-to-commit/">Git Origin Reset to Commit</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-19T19:41:00+08:00" pubdate data-updated="true">Nov 19<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/git-origin-reset-to-commit/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>http://blog.csdn.net/brave_heart_lxl/article/details/6651077
+http://blog.csdn.net/brave_heart_lxl/article/details/6651077</p>
+
+<p><strong>this is good</strong></p>
+
+<p>in markdown __means strong!!!!!!!!!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -937,106 +1021,6 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/setup-vim-for-python-dev/">Win7下Vim设置Python开发环境</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-11T19:52:00+08:00" pubdate data-updated="true">Oct 11<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/setup-vim-for-python-dev/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近用python写代码，条件有限，懒得用eclipse，遂用vim来做。网上搜了下vim支持python开发的方法，一步一步的来有点麻烦，想起以前有个脚本，稍加修改就OK了，在此与大家分享，功能上不只是支持python,常用的都支持，支持taglist以及minibuffer外加nerdtree（树形显示目录），应该说相当完善了，整个过程差不多10分钟搞定。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/10/setup-vim-for-python-dev/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/">在Ubuntu 12.04下用Github安装和维护Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-08T20:45:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>前言</h2>
-
-<p>其实之前用Github+Octopress架设博客用的是Win7,但是始终解决不了中文问题,今天换回Ubuntu,顺利解决,这里就干脆用Ubtuntu来做一个记录吧.</p>
-
-<h2>1 安装Ruby环境</h2>
-
-<p>利用RVM安装ruby,RVM管理Ruby的话感觉更爽一点,自己也懒得编译了.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>root@Node1:apt-get install curl git
-</span><span class='line'>root@Node1:curl -L get.rvm.io | bash -s stable</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/10/install-and-maintain-octopress-in-ubuntu-12-dot-04/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1058,6 +1042,14 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/11/python-paste-one-deploy-2/">Python.Paste指南之Deploy(2)-实践</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/git-origin-reset-to-commit/">git origin reset to commit</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/python-paste-one-deploy-1/">Python.Paste指南之Deploy(1)-概念</a>
       </li>
     
@@ -1073,14 +1065,6 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
         <a href="/blog/2012/10/best-format-for-octopress-article/">Octopress中文章信息头的最好形式</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/10/add-tags-for-octopress/">add tags for octopress</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/">在用Github搭建的Octopress博客中安装百度统计</a>
-      </li>
-    
   </ul>
 </section>
 <section>
@@ -1090,7 +1074,7 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
 
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/life' style='font-size: 140.0%'>Life(2)</a> <a href='/blog/categories/markdown' style='font-size: 120.0%'>Markdown(1)</a> <a href='/blog/categories/octopress' style='font-size: 160.0%'>Octopress(3)</a> <a href='/blog/categories/octopress' style='font-size: 140.0%'>octopress(2)</a> <a href='/blog/categories/paste-deploy' style='font-size: 120.0%'>Paste.Deploy(1)</a> <a href='/blog/categories/python' style='font-size: 140.0%'>Python(2)</a> <a href='/blog/categories/pythonthon' style='font-size: 120.0%'>Pythonthon(1)</a> <a href='/blog/categories/seo' style='font-size: 120.0%'>SEO(1)</a> <a href='/blog/categories/sqlalchemy' style='font-size: 120.0%'>sqlalchemy(1)</a> <a href='/blog/categories/tags' style='font-size: 120.0%'>tags(1)</a> <a href='/blog/categories/ubuntu' style='font-size: 120.0%'>Ubuntu(1)</a> <a href='/blog/categories/vim' style='font-size: 120.0%'>Vim(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/git' style='font-size: 120.0%'>Git(1)</a> <a href='/blog/categories/life' style='font-size: 140.0%'>Life(2)</a> <a href='/blog/categories/markdown' style='font-size: 120.0%'>Markdown(1)</a> <a href='/blog/categories/octopress' style='font-size: 140.0%'>octopress(2)</a> <a href='/blog/categories/octopress' style='font-size: 160.0%'>Octopress(3)</a> <a href='/blog/categories/paste-deploy' style='font-size: 120.0%'>Paste.Deploy(1)</a> <a href='/blog/categories/python' style='font-size: 160.0%'>Python(3)</a> <a href='/blog/categories/python-deploy' style='font-size: 120.0%'>Python.Deploy(1)</a> <a href='/blog/categories/pythonthon' style='font-size: 120.0%'>Pythonthon(1)</a> <a href='/blog/categories/seo' style='font-size: 120.0%'>SEO(1)</a> <a href='/blog/categories/sqlalchemy' style='font-size: 120.0%'>sqlalchemy(1)</a> <a href='/blog/categories/tags' style='font-size: 120.0%'>tags(1)</a> <a href='/blog/categories/ubuntu' style='font-size: 120.0%'>Ubuntu(1)</a> <a href='/blog/categories/vim' style='font-size: 120.0%'>Vim(1)</a> <a href='/blog/categories/web' style='font-size: 120.0%'>Web(1)</a> </span>
 </section>
 <section>
   <h1>Tags</h1>

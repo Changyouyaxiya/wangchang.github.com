@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Git | WangChang's Blog]]></title>
+  <link href="http://wangchang.github.com/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://wangchang.github.com/"/>
+  <updated>2012-11-21T14:08:40+08:00</updated>
+  <id>http://wangchang.github.com/</id>
+  <author>
+    <name><![CDATA[Wang Chang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[git origin reset to commit]]></title>
+    <link href="http://wangchang.github.com/blog/2012/11/git-origin-reset-to-commit/"/>
+    <updated>2012-11-19T19:41:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/11/git-origin-reset-to-commit</id>
+    <content type="html"><![CDATA[<p>http://blog.csdn.net/brave_heart_lxl/article/details/6651077
+http://blog.csdn.net/brave_heart_lxl/article/details/6651077</p>
+
+<p><strong>this is good</strong></p>
+
+<p>in markdown __means strong!!!!!!!!!</p>
+]]></content>
+  </entry>
+  
+</feed>

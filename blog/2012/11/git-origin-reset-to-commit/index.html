@@ -7,14 +7,12 @@
   <meta name="baidu-site-verification" content="FdwixqtrKX9ia1cZ" />
 
   <meta charset="utf-8">
-  <title>Python Sqlalchemy指南(一) - WangChang's Blog</title>
+  <title>git origin reset to commit - WangChang's Blog</title>
   <meta name="author" content="Wang Chang">
 
   
-  <meta name="description" content="最近项目需要学习sqlalchemy，对于这个神器，网上的教程实在太少了，而且版本太老。于是只好自己慢慢读，以此系列做一个记录的吧！ Sqlalchemy version:0.8.b1
-使用sqlite或者mysql来练习
-主要是参照官方文档，以及实际的使用经验
-OS:Win7 or &hellip;">
+  <meta name="description" content="http://blog.csdn.net/brave_heart_lxl/article/details/6651077
+http://blog.csdn.net/brave_heart_lxl/article/details/6651077 this is good in markdown &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,7 +21,7 @@ OS:Win7 or &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/">
+  <link rel="canonical" href="http://wangchang.github.com/blog/2012/11/git-origin-reset-to-commit/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -74,7 +72,7 @@ OS:Win7 or &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Python Sqlalchemy指南(一)</h1>
+      <h1 class="entry-title">Git Origin Reset to Commit</h1>
     
     
       <p class="meta">
@@ -90,7 +88,7 @@ OS:Win7 or &hellip;">
   
 
 
-<time datetime="2012-11-14T15:11:00+08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+<time datetime="2012-11-19T19:41:00+08:00" pubdate data-updated="true">Nov 19<span>th</span>, 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -99,44 +97,12 @@ OS:Win7 or &hellip;">
   </header>
 
 
-<div class="entry-content"><p>最近项目需要学习sqlalchemy，对于这个神器，网上的教程实在太少了，而且版本太老。于是只好自己慢慢读，以此系列做一个记录的吧！</p>
+<div class="entry-content"><p>http://blog.csdn.net/brave_heart_lxl/article/details/6651077
+http://blog.csdn.net/brave_heart_lxl/article/details/6651077</p>
 
-<blockquote><p>Sqlalchemy version:0.8.b1
-使用sqlite或者mysql来练习
-主要是参照官方文档，以及实际的使用经验
-OS:Win7 or Ubuntu12.04</p></blockquote>
+<p><strong>this is good</strong></p>
 
-<!--more-->
-
-
-<h2>Sqlalchemy的架构图</h2>
-
-<p>关于这个架构图，文档解释如下：</p>
-
-<blockquote><p>InSQLAlchemy ORM, the Object Relational Mapper is introduced and fully described. New users should begin with theObject Relational Tutorial.</p>
-
-<p>InSQLAlchemy Core, the breadth of SQLAlchemy’s SQL and database integration and description services are doc-umented, the core of which is the SQL Expression language. The SQL Expression Language is a toolkit all its own, independent of the ORM package, which can be used to construct manipulable SQL expressions which can be programmatically constructed, modified, and executed, returning cursor-like result sets.</p></blockquote>
-
-<h2>环境准备</h2>
-
-<p>pip install 或者 &#8216;easy install&#8217;都可以</p>
-
-<h1>#</h1>
-
-<p>和数据库连接，需要一个engine！</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>from sqlalchemy import create_engine
-</span><span class='line'>engine = create_engine(’sqlite:///:memory:’, echo=True)</span></code></pre></td></tr></table></div></figure>
-
-
-<p>引擎的方法：
-engine.execute(&#8220;select 1&#8221;).scalar() 直接执行sql语句。
-在使用ORM中，应该有两步，一是描述我们要处理的数据库，而是将我们的类和数据库中的table关联起来。在sqlalchemy中，这两步合二为一，使用declarative机制，在这个机制中，所有需要映射的类都是根据一个维护分类和映射关系的基类来的，这个基类就是declarative base class。</p>
-
-<p>from sqlalchemy.ext.declarative import declarative_base
-Base = declarative_base() #创建这个base类</p>
+<p>in markdown __means strong!!!!!!!!!</p>
 </div>
 
 
@@ -159,12 +125,12 @@ Base = declarative_base() #创建这个base类</p>
   
 
 
-<time datetime="2012-11-14T15:11:00+08:00" pubdate data-updated="true">Nov 14<span>th</span>, 2012</time>
+<time datetime="2012-11-19T19:41:00+08:00" pubdate data-updated="true">Nov 19<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/pythonthon/'>Pythonthon</a>, <a class='category' href='/blog/categories/sqlalchemy/'>sqlalchemy</a>
+    <a class='category' href='/blog/categories/git/'>Git</a>
   
 </span>
 
@@ -183,10 +149,10 @@ Base = declarative_base() #创建这个base类</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/" title="Previous Post: 在Ubuntu12.04下关闭触摸板">&laquo; 在Ubuntu12.04下关闭触摸板</a>
+        <a class="basic-alignment left" href="/blog/2012/11/python-paste-one-deploy-1/" title="Previous Post: Python.Paste指南之Deploy(1)-概念">&laquo; Python.Paste指南之Deploy(1)-概念</a>
       
       
-        <a class="basic-alignment right" href="/blog/2012/11/python-paste-one-deploy-1/" title="Next Post: Python.Paste指南之Deploy(1)-概念">Python.Paste指南之Deploy(1)-概念 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2012/11/python-paste-one-deploy-2/" title="Next Post: Python.Paste指南之Deploy(2)-实践">Python.Paste指南之Deploy(2)-实践 &raquo;</a>
       
     </p>
   </footer>
@@ -275,8 +241,8 @@ Base = declarative_base() #创建这个base类</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/';
-        var disqus_url = 'http://wangchang.github.com/blog/2012/11/sqlalchemy-tutorial-1/';
+        var disqus_identifier = 'http://wangchang.github.com/blog/2012/11/git-origin-reset-to-commit/';
+        var disqus_url = 'http://wangchang.github.com/blog/2012/11/git-origin-reset-to-commit/';
         var disqus_script = 'embed.js';
       
     (function () {
