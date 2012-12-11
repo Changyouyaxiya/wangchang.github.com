@@ -121,6 +121,91 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
 
 <p>pip install 或者 &#8216;easy install&#8217;都可以</p>
 
+<h2>概念解释</h2>
+
+<h3>Engine Class</h3>
+
+<p>class engine主要作用是1、管理与数据库的连接（一个连接池） 2、一个包含多个策略的连接池，这些策略用来配置从连接池中获取连接的方式。
+函数create_engine(url,args)用于创建一个和数据库的engine，用于连接的URL格式为：<code>driver://username:password@host:port/database</code>有以下几个方式:</p>
+
+<pre><code>#Create a connection to a database
+engine = create_engine('sqlite://')
+engine = create_engine('sqlite:///data.sqlite')
+engine = create_engine('mysql://localhost/mysql_db')
+</code></pre>
+
+<p>其中，参数args是一个字典，有以下一些：</p>
+
+<pre><code>echo=True or False
+strategy
+use_ansi
+encoding
+</code></pre>
+
+<p>一个engine有以下方法：connect</p>
+
+<h3>MetaData Class</h3>
+
+<p>class metadata主要作用是，维护数据方法（mysql,sqlite等）以及表的定义。其中包含了收集管理描述表的类的功能。使用MetaData的构造器即可实例化，如果构造器中有engine或者url参数，那么这就是一个bound的MetaDate，如果没参数，就是一个unbound的MetaData。</p>
+
+<pre><code>unbound_meta = MetaData()
+
+db = create_engine('sqlite://')
+bound_meta = MetaData(bind=db)
+</code></pre>
+
+<p>当MetaData被bind以后，就可以方便的创建表等操作了，如下：
+类</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+</span><span class='line'><span class="n">metadata</span><span class="o">=</span><span class="n">MetaData</span><span class="p">()</span>
+</span><span class='line'><span class="n">user_table</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>
+</span><span class='line'>    <span class="s">&#39;tf_user&#39;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+</span><span class='line'>    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;user_name&#39;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;email_address&#39;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">40</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;created&#39;</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">user_table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span><span class="c">#在数据库中创建相应的Table</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>表、列、约束</h3>
+
+<p>Table.<strong>init</strong>(self, name, metadata,<em>args, **kwargs)
+Column.<strong>init</strong>(self, name, type_, </em>args, **kwargs)</p>
+
+<p>Primary keys</p>
+
+<p>用primary_key=True来指定一个列的主键，例如</p>
+
+<pre><code>Column('brand_id', Integer, ForeignKey('brand.id'),primary_key=True)
+</code></pre>
+
+<p>Foreign keys</p>
+
+<p>Foreign keys是将一个表中的一行与另一个表中的一行进行联系，调用方式：
+ForeignKey.<strong>init</strong>( self, col-umn, constraint=None, use_alter=False, name=None, onupdate=None, ondelete=None)
+Column(&#8216;brand_id&#8217;, Integer, ForeignKey(&#8216;brand.id&#8217;))</p>
+
 <h1>#</h1>
 
 <p>和数据库连接，需要一个engine！</p>
@@ -213,27 +298,27 @@ Base = declarative_base() #创建这个base类</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/11/python-routes-3-to-wsgi-framework/">python routes 3 to WSGI framework</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/python-routes-2-restful-services/">python routes 2 RESTful services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/python-routes-1-introduction/">Python.Routes指南1 </a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/how-to-add-api-extension-to-quantum-1/">how to add api extension to quantum 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/python-paste-two-webob-1/">Python.Paste指南之WebOb(1)-概念</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/python-paste-one-deploy-2/">Python.Paste指南之Deploy(2)-实践</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/git-origin-reset-to-commit/">git origin reset to commit</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/python-paste-one-deploy-1/">Python.Paste指南之Deploy(1)-概念</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/sqlalchemy-tutorial-1/">Python Sqlalchemy指南(一)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/">在Ubuntu12.04下关闭触摸板</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/best-format-for-octopress-article/">Octopress中文章信息头的最好形式</a>
       </li>
     
   </ul>
@@ -245,7 +330,7 @@ Base = declarative_base() #创建这个base类</p>
 
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/git' style='font-size: 115.0%'>Git(1)</a> <a href='/blog/categories/life' style='font-size: 130.0%'>Life(2)</a> <a href='/blog/categories/markdown' style='font-size: 115.0%'>Markdown(1)</a> <a href='/blog/categories/octopress' style='font-size: 145.0%'>Octopress(3)</a> <a href='/blog/categories/octopress' style='font-size: 130.0%'>octopress(2)</a> <a href='/blog/categories/paste-deploy' style='font-size: 130.0%'>Paste.Deploy(2)</a> <a href='/blog/categories/python' style='font-size: 160.0%'>Python(4)</a> <a href='/blog/categories/seo' style='font-size: 115.0%'>SEO(1)</a> <a href='/blog/categories/sqlalchemy' style='font-size: 115.0%'>sqlalchemy(1)</a> <a href='/blog/categories/tags' style='font-size: 115.0%'>tags(1)</a> <a href='/blog/categories/ubuntu' style='font-size: 115.0%'>Ubuntu(1)</a> <a href='/blog/categories/vim' style='font-size: 115.0%'>Vim(1)</a> <a href='/blog/categories/web' style='font-size: 115.0%'>Web(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/git' style='font-size: 108.57142857142857%'>Git(1)</a> <a href='/blog/categories/life' style='font-size: 117.14285714285714%'>Life(2)</a> <a href='/blog/categories/markdown' style='font-size: 108.57142857142857%'>Markdown(1)</a> <a href='/blog/categories/octopress' style='font-size: 125.71428571428572%'>Octopress(3)</a> <a href='/blog/categories/octopress' style='font-size: 117.14285714285714%'>octopress(2)</a> <a href='/blog/categories/paste-deploy' style='font-size: 117.14285714285714%'>Paste.Deploy(2)</a> <a href='/blog/categories/paste-webob' style='font-size: 108.57142857142857%'>Paste.webob(1)</a> <a href='/blog/categories/python' style='font-size: 160.0%'>Python(7)</a> <a href='/blog/categories/routes' style='font-size: 117.14285714285714%'>Routes(2)</a> <a href='/blog/categories/seo' style='font-size: 108.57142857142857%'>SEO(1)</a> <a href='/blog/categories/sqlalchemy' style='font-size: 108.57142857142857%'>sqlalchemy(1)</a> <a href='/blog/categories/tags' style='font-size: 108.57142857142857%'>tags(1)</a> <a href='/blog/categories/ubuntu' style='font-size: 108.57142857142857%'>Ubuntu(1)</a> <a href='/blog/categories/vim' style='font-size: 108.57142857142857%'>Vim(1)</a> <a href='/blog/categories/web' style='font-size: 108.57142857142857%'>Web(1)</a> <a href='/blog/categories/web开发' style='font-size: 117.14285714285714%'>Web开发(2)</a> <a href='/blog/categories/wsgi' style='font-size: 117.14285714285714%'>WSGI(2)</a> </span>
 </section>
 <section>
   <h1>Tags</h1>

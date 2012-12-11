@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Web开发 | WangChang's Blog]]></title>
+  <link href="http://wangchang.github.com/blog/categories/web开发/atom.xml" rel="self"/>
+  <link href="http://wangchang.github.com/"/>
+  <updated>2012-12-11T14:10:26+08:00</updated>
+  <id>http://wangchang.github.com/</id>
+  <author>
+    <name><![CDATA[Wang Chang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[python routes 2 RESTful services]]></title>
+    <link href="http://wangchang.github.com/blog/2012/11/python-routes-2-restful-services/"/>
+    <updated>2012-11-29T18:37:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/11/python-routes-2-restful-services</id>
+    <content type="html"><![CDATA[<p>这一节主要讲讲用Routes来配置RESTful web services。<code>map.resource</code>可以根据Atom publishing protocol协议来创建一个<code>创建/修改/删除</code>的routes。也就是说根据resource来配置routes。</p>
+
+<!--more-->
+
+
+<h2>Resource</h2>
+
+<p>一个resource route定义了一个collection中的成员member，以及一个collection自身。一般来说，一个collection就是一个复数单词，一个member就是相应的一个单数词，举例：</p>
+
+<p>在restful服务中，我定义了关于虚拟连接VC的一些API。那么
+* resoure:vc,vcs
+* collection:vcs
+* member:vc
+再看看一个复杂点的例子：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="nb">map</span> <span class="o">=</span> <span class="n">Mapper</span><span class="p">()</span>
+</span><span class='line'><span class="nb">map</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s">&quot;message&quot;</span><span class="p">,</span> <span class="s">&quot;messages&quot;</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">The</span> <span class="n">above</span> <span class="n">command</span> <span class="n">sets</span> <span class="n">up</span> <span class="n">several</span> <span class="n">routes</span> <span class="k">as</span> <span class="k">if</span> <span class="n">you</span> <span class="n">had</span> <span class="n">typed</span> <span class="n">the</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">following</span> <span class="n">commands</span><span class="p">:</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="s">&quot;/messages&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;create&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;POST&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="s">&quot;/messages&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;index&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;formatted_messages&quot;</span><span class="p">,</span> <span class="s">&quot;/messages.{format}&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;index&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;new_message&quot;</span><span class="p">,</span> <span class="s">&quot;/messages/new&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;new&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;formatted_new_message&quot;</span><span class="p">,</span> <span class="s">&quot;/messages/new.{format}&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;new&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;/messages/{id}&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;update&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;PUT&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;/messages/{id}&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;delete&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;DELETE&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;edit_message&quot;</span><span class="p">,</span> <span class="s">&quot;/messages/{id}/edit&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;edit&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;formatted_edit_message&quot;</span><span class="p">,</span> <span class="s">&quot;/messages/{id}.{format}/edit&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;edit&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;message&quot;</span><span class="p">,</span> <span class="s">&quot;/messages/{id}&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;show&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nb">map</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;formatted_message&quot;</span><span class="p">,</span> <span class="s">&quot;/messages/{id}.{format}&quot;</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">controller</span><span class="o">=</span><span class="s">&quot;messages&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;show&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="n">conditions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;GET&quot;</span><span class="p">]))</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>看到这里，我们可以推断出这么几个名词的定义：
+* <strong>controller:就是一个WSGI的应用
+* </strong>resource(s):就是REST API中的名词
+* <strong>method:就是HTTP的方法，GET POST等
+* </strong>action:Routes中与method对应，比如GET就对应"index"动作
+* __collection:等同于resources。</p>
+
+<p>上面的代码建立了如下的转换关系：
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>- awesome.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="no">GET</span>    <span class="sr">/messages        =&gt; messages.index()    =&gt; url(&quot;messages&quot;)</span>
+</span><span class='line'><span class="sr">POST   /mess</span><span class="n">ages</span>        <span class="o">=&gt;</span> <span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>   <span class="o">=&gt;</span> <span class="n">url</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="no">GET</span>    <span class="sr">/messages/ne</span><span class="n">w</span>    <span class="o">=&gt;</span> <span class="n">messages</span><span class="o">.</span><span class="n">new</span><span class="p">()</span>      <span class="o">=&gt;</span> <span class="n">url</span><span class="p">(</span><span class="s2">&quot;new_message&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="no">PUT</span>    <span class="sr">/messages/</span><span class="mi">1</span>      <span class="o">=&gt;</span> <span class="n">messages</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">url</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="no">DELETE</span> <span class="sr">/messages/</span><span class="mi">1</span>      <span class="o">=&gt;</span> <span class="n">messages</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">url</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="no">GET</span>    <span class="sr">/messages/</span><span class="mi">1</span>      <span class="o">=&gt;</span> <span class="n">messages</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>   <span class="o">=&gt;</span> <span class="n">url</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="no">GET</span>    <span class="sr">/messages/</span><span class="mi">1</span><span class="o">/</span><span class="n">edit</span> <span class="o">=&gt;</span> <span class="n">messages</span><span class="o">.</span><span class="n">edit</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>   <span class="o">=&gt;</span> <span class="n">url</span><span class="p">(</span><span class="s2">&quot;edit_message&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+我们很明显的看到，这个<code>messages</code>就是一个WSGI应用，准确的来说，在代码中就是一个类的实例。</p>
+
+<p>官网上有这么个解释，我就不翻译了：</p>
+
+<blockquote><p>Thus, you GET the collection to see an index of links to members (“index” method). You GET a member to see it (“show”). You GET “COLLECTION/new” to obtain a new message form (“new”), which you POST to the collection (“create”). You GET “MEMBER/edit” to obtain an edit for (“edit”), which you PUT to the member (“update”). You DELETE the member to delete it. Note that there are only four route names because multiple actions are doubled up on the same URLs.</p></blockquote>
+
+<h2>Resource选项。</h2>
+
+<p>之前我们有<code>map.resource("message", "messages")</code>来增加了一个resource资源。可以增加一些参数。如下：
+* <strong>controller
+使用指定的controller，否则routes根据collection的名字来决定controller的名字。
+* </strong>collection
+为某以collection添加URL支持，如下：</p>
+
+<pre><code>map.resource("message", "messages", collection={"rss": "GET"})
+# "GET /message/rss"  =&gt;  ``Messages.rss()``.
+# Defines a named route "rss_messages".自动定义
+</code></pre>
+
+<ul>
+<li><p>__member
+为一个member添加URL支持，如下：</p>
+
+<p>  map.resource('message', 'messages', member={'mark':'POST'})
+  # "POST /message/1/mark"  =>  <code>Messages.mark(1)</code>
+  # also adds named route "mark_message"</p></li>
+<li><p>__new
+为新成员加入URL支持，如下：</p>
+
+<p>  map.resource("message", "messages", new={"preview": "POST"})
+  # "POST /messages/new/preview"</p></li>
+<li><p>__path_prefix</p></li>
+<li><p>__name_prefix</p>
+
+<p>  map.resource("message", "messages", controller="categories",</p>
+
+<pre><code> path_prefix="/category/{category_id}",
+ name_prefix="category_")
+</code></pre>
+
+<p>  # GET /category/7/message/1
+  # Adds named route "category_message"</p></li>
+<li><p>__parenet_resource
+一个包含父类资源的字典，用于创建嵌套（嵌入式）的资源。需要包含父类资源的member_name和collection_name，这个字典可以在请求的时候通过<code>request.environ["routes.route"]</code>访问。</p></li>
+</ul>
+
+
+<p>后面不是很懂了。。。
+If parent_resource is supplied and path_prefix isn’t, path_prefix will be generated from parent_resource as “<parent collection name>/:<parent member name>_id”.</p>
+
+<p>If parent_resource is supplied and name_prefix isn’t, name_prefix will be generated from parent_resource as “<parent member name>_”.
+{}</p>
+
+<blockquote><blockquote><blockquote><p>m = Mapper()
+m.resource('location', 'locations',
+...            parent_resource=dict(member_name='region',
+...                                 collection_name='regions'))</p>
+
+<h1>path_prefix is "regions/:region_id"</h1>
+
+<h1>name prefix is "region_"</h1>
+
+<p>url('region_locations', region_id=13)
+'/regions/13/locations'
+url('region_new_location', region_id=13)
+'/regions/13/locations/new'
+url('region_location', region_id=13, id=60)
+'/regions/13/locations/60'
+url('region_edit_location', region_id=13, id=60)
+'/regions/13/locations/60/edit'</p></blockquote></blockquote></blockquote>
+
+<p>Overriding generated path_prefix:</p>
+
+<blockquote><blockquote><blockquote><p>m = Mapper()
+m.resource('location', 'locations',
+...            parent_resource=dict(member_name='region',
+...                                 collection_name='regions'),
+...            path_prefix='areas/:area_id')</p>
+
+<h1>name prefix is "region_"</h1>
+
+<p>url('region_locations', area_id=51)
+'/areas/51/locations'</p></blockquote></blockquote></blockquote>
+
+<p>Overriding generated name_prefix:</p>
+
+<blockquote><blockquote><blockquote><p>m = Mapper()
+m.resource('location', 'locations',
+...            parent_resource=dict(member_name='region',
+...                                 collection_name='regions'),
+...            name_prefix='')</p>
+
+<h1>path_prefix is "regions/:region_id"</h1>
+
+<p>url('locations', region_id=51)
+'/regions/51/locations'
+{}</p></blockquote></blockquote></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Python.Routes指南1 ]]></title>
+    <link href="http://wangchang.github.com/blog/2012/11/python-routes-1-introduction/"/>
+    <updated>2012-11-29T16:08:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/11/python-routes-1-introduction</id>
+    <content type="html"><![CDATA[<h2>什么是Routes</h2>
+
+<p>用python重新实现的Rails Routes System，主要用来将URL映射到不同的应用动作（application actions）。特别适合于RESTFUL API。</p>
+
+<p>Routes支持基于domain, cookies, HTTP method, 自定义function的映射。目前支持的功能：</p>
+
+<p>Sophisticated route lookup and URL generation
+Named routes
+Redirect routes
+Wildcard paths before and after static parts
+Sub-domain support built-in
+Conditional matching based on domain, cookies, HTTP method (RESTful), and more
+Easily extensible utilizing custom condition functions and route generation functions
+Extensive unit tests</p>
+
+<p>安装：</p>
+
+<pre><code>easy_install Routes
+pip install Routes
+</code></pre>
+
+<h2>1 基本概念</h2>
+
+<h3>component组件</h3>
+
+<p>一个URL中的一个个组成部分，例如/blog/2012就有两个component:blog,2012</p>
+
+<h3>generation</h3>
+
+<p>基于route的名字或者变量的值创建一个URL，这个是match的反过程。</p>
+
+<h3>mapper</h3>
+
+<p>routes的容器，一般一个应用一个mapper，一个mapper知道如何去匹配routes或者产生routes.</p>
+
+<h3>minimization</h3>
+
+<p>允许短URL进行长路劲的匹配，已废弃。</p>
+
+<h3>routes</h3>
+
+<p>一个规则，将一个URL映射成为一个routing variables的字典，比如，规则是“/{controller}/{action}”，请求的URL是“/help/about”，那么结果字典就是：</p>
+
+<pre><code>{"controller": "help", "action": "about"}
+</code></pre>
+
+<p>routes并不知道这些变量的含义，它只是把这个结果返回给应用。一个route可以拥有一个名字。</p>
+
+<h3>route paths</h3>
+
+<p>一条route中的URL模式（pattern）</p>
+
+<h3>routing variables</h3>
+
+<p>匹配之后返回的键值对。route path中定义的变量叫做path变量，他们的值来自URL中。route path外定义的变量叫做默认变量，其值不受URL影响。</p>
+
+<p>特别注意！在WSGI中，用于route的关键字是environment（environ）中的wsgiorg.routing_args.</p>
+
+<h2>2 简单的例子：</h2>
+
+<pre><code># Setup a mapper
+from routes import Mapper
+map = Mapper()
+map.connect(None, "/error/{action}/{id}, controller="error")
+map.connect("home", "/", controller="main", action="index")
+map.connect(None, "/{controller}/{action}")
+map.connect(None, "/{controller}/{action}/{id}")
+
+
+# Match a URL, returns a dict or None if no match
+result = map.match('/error/myapp/4')
+# result == {'controller': 'main', 'action': 'myapp', 'id': '4'}
+</code></pre>
+
+<p>对上面代码的一个简单解释：
+1~2行创建了一个简单的mapper。</p>
+
+<p>3行创建了一个以/error开始的任意三段的路由，并设置controller变量为一个常量！所以如果一个URL是<code>/error/images/arrow.jpg</code>，执行map.match（"/error/images/arrow.jpg"）得到的字典结果就会是：</p>
+
+<p><code>{"controller": "error", "action": "images", "id": "arrow.jpg"}</code></p>
+
+<p>4行创建了/的映射，并将controller和action设置为常量。而"home"表示此条route的名字。</p>
+
+<p>6行匹配任务两端的URL。7行匹配任意三段的URL。所以前面的例子" “/error/images/arrow.jpg”"还能够匹配6、7行，在这种情况下，Routes采用的是以第一次匹配到的为准，顺序优先。</p>
+
+<p>还有下面的例子：</p>
+
+<pre><code>m.connect("/feeds/{category}/atom.xml", controller="feeds", action="atom")
+m.connect("history", "/archives/by_eon/{century}", controller="archives",
+      action="aggregate")
+m.connect("article", "/article/{section}/{slug}/{page}.html",
+      controller="article", action="view")
+</code></pre>
+
+<h2>3 初步深入</h2>
+
+<h3>3.1 Magic path_info</h3>
+
+<p>如果URL中使用了path_info，Routes会将先前的所有信息移动到“SCRIPT_NAME”这个环境变量中。当另外的WSGI应用有自己的routing的时候这个能起到很好的转移作用。看看如下的例子，用于WSGI环境。</p>
+
+<pre><code>map.connect(None, "/cards/{path_info:.*}",
+   controller="main", action="cards")
+# Incoming URL "/cards/diamonds/4.png"
+=&gt; {"controller": "main", action: "cards", "path_info": "/diamonds/4.png"}
+# Second WSGI application sees:
+# SCRIPT_NAME="/cards"   PATH_INFO="/diamonds/4.png"
+</code></pre>
+
+<h3>3.2 Condition条件匹配</h3>
+
+<p>在一条route中，可以加入相应的条件，以加强匹配效果。condition是一个字典，最多只有以下三个关键字：
+* method
+大写的HTTP方法。
+* sub_domain
+这个目前不是很熟悉。
+* function
+三种方式使用如下：用一个函数来对请求进行处理，<code>func(environ, match_dict) =&gt; bool</code></p>
+
+<p>{}</p>
+
+<h1>Match only if the HTTP method is "GET" or "HEAD".</h1>
+
+<p>m.connect("/user/list", controller="user", action="list",</p>
+
+<pre><code>      conditions=dict(method=["GET", "HEAD"]))
+</code></pre>
+
+<h1>A sub-domain should be present.</h1>
+
+<p>m.connect("/", controller="user", action="home",</p>
+
+<pre><code>      conditions=dict(sub_domain=True))
+</code></pre>
+
+<h1>Sub-domain should be either "fred" or "george".</h1>
+
+<p>m.connect("/", controller="user", action="home",</p>
+
+<pre><code>      conditions=dict(sub_domain=["fred", "george"]))
+</code></pre>
+
+<h1>Put the referrer into the resulting match dictionary.</h1>
+
+<h1>This function always returns true, so it never prevents the match</h1>
+
+<h1>from succeeding.</h1>
+
+<p>def referals(environ, result):</p>
+
+<pre><code>result["referer"] = environ.get("HTTP_REFERER")
+return True
+</code></pre>
+
+<p>m.connect("/{controller}/{action}/{id}",</p>
+
+<pre><code>conditions=dict(function=referals))
+</code></pre>
+
+<p>{}</p>
+
+<h3>3.3 在route中还可以使用通配符和正则表达式</h3>
+
+<h3>3.4 格式扩展</h3>
+
+<p>通过<code>{.format}</code>，可以匹配一个格式的扩展，比如.html或者.json。比如：</p>
+
+<pre><code>map.connect('/entries/{id}{.format:json}')
+</code></pre>
+
+<p>就只会匹配到"/entries/1.json"。</p>
+
+<h3>submapper</h3>
+
+<h3>从子程序添加routes</h3>
+
+<p>一个子程序可以传递给父程序一个routes的列表，通过mapper的<code>extend</code>方法，增加routes。如下：</p>
+
+<pre><code>routes = [
+   Route("index", "/index.html", controller="home", action="index"),
+    ]
+
+map.extend(routes)
+# /index.html =&gt; {"controller": "home", "action": "index"}
+
+map.extend(routes, "/subapp")
+# /subapp/index.html =&gt; {"controller": "home", "action": "index"}
+</code></pre>
+
+<p><a href="http://routes.readthedocs.org/en/latest/setting_up.html">http://routes.readthedocs.org/en/latest/setting_up.html</a></p>
+]]></content>
+  </entry>
+  
+</feed>

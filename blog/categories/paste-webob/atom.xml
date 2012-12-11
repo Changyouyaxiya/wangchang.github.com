@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Paste.webob | WangChang's Blog]]></title>
+  <link href="http://wangchang.github.com/blog/categories/paste-webob/atom.xml" rel="self"/>
+  <link href="http://wangchang.github.com/"/>
+  <updated>2012-12-11T14:10:26+08:00</updated>
+  <id>http://wangchang.github.com/</id>
+  <author>
+    <name><![CDATA[Wang Chang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Python.Paste指南之WebOb(1)-概念]]></title>
+    <link href="http://wangchang.github.com/blog/2012/11/python-paste-two-webob-1/"/>
+    <updated>2012-11-21T16:56:00+08:00</updated>
+    <id>http://wangchang.github.com/blog/2012/11/python-paste-two-webob-1</id>
+    <content type="html"><![CDATA[<p>这次主要来学习Paste的核心内容，WebOb，内容依然来自官方翻译、网络参考以及自己的实践。</p>
+
+<blockquote></blockquote>
+
+<h2>What is WebOb?</h2>
+
+<p>WebOb是一个Python库，主要是用在WSGI中对请求环境变量request environment（也就是WSGI应用中的参数environ）进行包装（提供wrapper），并提供了一个对象来方便的处理返回response消息。WebOb提供的对象映射了大多数的HTTP方法，包括头解析，content协商等。这里的映射，就是说只需要对对象进行操作，就可以完成HHTP的方法，从而大大简化开发难度。引用官方文档，WebOb有以下特点：</p>
+
+<blockquote><p>Maps most of HTTP spec to friendly data structures.
+Time-proven codebase that works around and hides all known WSGI quirks.
+Zero known issues (reported bugs are always fixed ASAP).
+100% test coverage.
+No external dependencies.
+Supports Python 3</p></blockquote>
+
+<p>WebOb为HTTP的请求和相应提供了相应的对象。通过对WSGI request environment进行wrap来简化操作。</p>
+
+<h2>Request</h2>
+
+<p><code>webob.Request</code>对象是对WSGI environ dictionary的一个包装。后者这个字典以键值的形式描述了一个HTTP请求包括path信息和query string，以及一个与文件对象类似的秒速请求的body，以及一些其他的自定义keys。如下可以创建一个简单的Request对象。</p>
+
+<pre><code>&gt;&gt;&gt;from webob import Request
+&gt;&gt;&gt;environ = {'method': 'GET'}  
+&gt;&gt;&gt;req = Request(environ) 
+</code></pre>
+
+<p>强调，<code>The request object wraps the environment</code>，仅仅是包装，所以你可以对这个environ进行读写的。可以通过req.environ可以访问到这个environ。但是一般都没必要这样做，直接用这个Request对象来操作就好了。如下：</p>
+
+<pre><code>&gt;&gt;&gt;req.environ
+{'method': 'GET'}
+&gt;&gt;&gt;req.method 
+'GET'
+</code></pre>
+
+<h2>此外，还有，req.accept_language, req.content_length, req.user_agent等。我们可以通过dir(req)来看看这个对象的方法咯。</h2>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>- awesome.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;blockquote&gt;&lt;blockquote&gt;&lt;blockquote&gt;&lt;p&gt;dir(req)</span>
+</span><span class='line'><span class="sr">[&#39;GET&#39;, &#39;POST&#39;, &#39;ResponseClass&#39;, &#39;&lt;strong&gt;class&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">delattr</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;dict&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">doc</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;format&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">getattr</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;getattribute&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="nb">hash</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;init&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">module</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;new&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">reduce</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;reduce_ex&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">repr</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;setattr&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">sizeof</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;str&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">subclasshook</span><span class="o">&lt;</span><span class="sr">/strong&gt;&#39;, &#39;&lt;strong&gt;weakref&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">body__del</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="sr">/em&gt;body&lt;strong&gt;get&#39;, &#39;_body&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="n">set</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">body_file__del</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="sr">/em&gt;body_file&lt;strong&gt;get&#39;, &#39;_body_file&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="n">set</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">cache_control__del</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="sr">/em&gt;cache_control&lt;strong&gt;get&#39;, &#39;_cache_control&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="n">set</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">charset</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="sr">/em&gt;check_charset&#39;, &#39;&lt;em&gt;content_type__get&#39;, &#39;&lt;/em</span><span class="o">&gt;</span><span class="n">content_type</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">set</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">content_type_raw</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="sr">/em&gt;copy_body_tempfile&#39;, &#39;&lt;em&gt;headers&#39;, &#39;&lt;/em</span><span class="o">&gt;</span><span class="n">headers</span><span class="o">&lt;</span><span class="sr">/strong&gt;get&#39;, &#39;&lt;em&gt;headers__set&#39;, &#39;&lt;/em</span><span class="o">&gt;</span><span class="n">host</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">del</span><span class="s1">&#39;, &#39;</span><span class="n">_host</span><span class="o">&lt;</span><span class="sr">/strong&gt;get&#39;, &#39;&lt;em&gt;host__set&#39;, &#39;&lt;/em</span><span class="o">&gt;</span><span class="n">is_body_readable</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">get</span><span class="s1">&#39;, &#39;</span><span class="n">_is_body_readable</span><span class="o">&lt;</span><span class="sr">/strong&gt;set&#39;, &#39;&lt;em&gt;json_body__del&#39;, &#39;&lt;/em</span><span class="o">&gt;</span><span class="n">json_body</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">get</span><span class="s1">&#39;, &#39;</span><span class="n">_json_body</span><span class="o">&lt;</span><span class="sr">/strong&gt;set&#39;, &#39;&lt;em&gt;setattr_stacklevel&#39;, &#39;&lt;/em</span><span class="o">&gt;</span><span class="n">text</span><span class="o">&lt;</span><span class="n">strong</span><span class="o">&gt;</span><span class="n">del</span><span class="s1">&#39;, &#39;</span><span class="n">_text</span><span class="o">&lt;</span><span class="sr">/strong&gt;get&#39;, &#39;&lt;em&gt;text__set&#39;, &#39;&lt;/em</span><span class="o">&gt;</span><span class="n">update_cache_control</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">urlargs__del</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="sr">/em&gt;urlargs&lt;strong&gt;get&#39;, &#39;_urlargs&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="n">set</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">urlvars__del</span><span class="s1">&#39;, &#39;</span><span class="o">&lt;</span><span class="sr">/em&gt;urlvars&lt;strong&gt;get&#39;, &#39;_urlvars&lt;/s</span><span class="n">trong</span><span class="o">&gt;</span><span class="n">set</span><span class="s1">&#39;, &#39;</span><span class="n">accept</span><span class="s1">&#39;, &#39;</span><span class="n">accept_charset</span><span class="s1">&#39;, &#39;</span><span class="n">accept_encoding</span><span class="s1">&#39;, &#39;</span><span class="n">accept_language</span><span class="s1">&#39;, &#39;</span><span class="n">application_url</span><span class="s1">&#39;, &#39;</span><span class="n">as_bytes</span><span class="s1">&#39;, &#39;</span><span class="n">as_string</span><span class="s1">&#39;, &#39;</span><span class="n">as_text</span><span class="s1">&#39;, &#39;</span><span class="n">authorization</span><span class="s1">&#39;, &#39;</span><span class="n">blank</span><span class="s1">&#39;, &#39;</span><span class="n">body</span><span class="s1">&#39;, &#39;</span><span class="n">body_file</span><span class="s1">&#39;, &#39;</span><span class="n">body_file_raw</span><span class="s1">&#39;, &#39;</span><span class="n">body_file_seekable</span><span class="s1">&#39;, &#39;</span><span class="n">cache_control</span><span class="s1">&#39;, &#39;</span><span class="n">call_application</span><span class="s1">&#39;, &#39;</span><span class="n">charset</span><span class="s1">&#39;, &#39;</span><span class="n">client_addr</span><span class="s1">&#39;, &#39;</span><span class="n">content_length</span><span class="s1">&#39;, &#39;</span><span class="n">content_type</span><span class="s1">&#39;, &#39;</span><span class="n">cookies</span><span class="s1">&#39;, &#39;</span><span class="n">copy</span><span class="s1">&#39;, &#39;</span><span class="n">copy_body</span><span class="s1">&#39;, &#39;</span><span class="n">copy_get</span><span class="s1">&#39;, &#39;</span><span class="n">date</span><span class="s1">&#39;, &#39;</span><span class="n">decode</span><span class="s1">&#39;, &#39;</span><span class="n">encget</span><span class="s1">&#39;, &#39;</span><span class="n">encset</span><span class="s1">&#39;, &#39;</span><span class="n">environ</span><span class="s1">&#39;, &#39;</span><span class="n">from_bytes</span><span class="s1">&#39;, &#39;</span><span class="n">from_file</span><span class="s1">&#39;, &#39;</span><span class="n">from_string</span><span class="s1">&#39;, &#39;</span><span class="n">from_text</span><span class="s1">&#39;, &#39;</span><span class="n">get_response</span><span class="s1">&#39;, &#39;</span><span class="n">headers</span><span class="s1">&#39;, &#39;</span><span class="n">host</span><span class="s1">&#39;, &#39;</span><span class="n">host_port</span><span class="s1">&#39;, &#39;</span><span class="n">host_url</span><span class="s1">&#39;, &#39;</span><span class="n">http_version</span><span class="s1">&#39;, &#39;</span><span class="n">if_match</span><span class="s1">&#39;, &#39;</span><span class="n">if_modified_since</span><span class="s1">&#39;, &#39;</span><span class="n">if_none_match</span><span class="s1">&#39;, &#39;</span><span class="n">if_range</span><span class="s1">&#39;, &#39;</span><span class="n">if_unmodified_since</span><span class="s1">&#39;, &#39;</span><span class="n">is_body_readable</span><span class="s1">&#39;, &#39;</span><span class="n">is_body_seekable</span><span class="s1">&#39;, &#39;</span><span class="n">is_xhr</span><span class="s1">&#39;, &#39;</span><span class="n">json</span><span class="s1">&#39;, &#39;</span><span class="n">json_body</span><span class="s1">&#39;, &#39;</span><span class="n">make_body_seekable</span><span class="s1">&#39;, &#39;</span><span class="n">make_default_send_app</span><span class="s1">&#39;, &#39;</span><span class="n">make_tempfile</span><span class="s1">&#39;, &#39;</span><span class="n">max_forwards</span><span class="s1">&#39;, &#39;</span><span class="nb">method</span><span class="s1">&#39;, &#39;</span><span class="n">params</span><span class="s1">&#39;, &#39;</span><span class="n">path</span><span class="s1">&#39;, &#39;</span><span class="n">path_info</span><span class="s1">&#39;, &#39;</span><span class="n">path_info_peek</span><span class="s1">&#39;, &#39;</span><span class="n">path_info_pop</span><span class="s1">&#39;, &#39;</span><span class="n">path_qs</span><span class="s1">&#39;, &#39;</span><span class="n">path_url</span><span class="s1">&#39;, &#39;</span><span class="n">pragma</span><span class="s1">&#39;, &#39;</span><span class="n">query_string</span><span class="s1">&#39;, &#39;</span><span class="n">range</span><span class="s1">&#39;, &#39;</span><span class="n">referer</span><span class="s1">&#39;, &#39;</span><span class="n">referrer</span><span class="s1">&#39;, &#39;</span><span class="n">relative_url</span><span class="s1">&#39;, &#39;</span><span class="n">remote_addr</span><span class="s1">&#39;, &#39;</span><span class="n">remote_user</span><span class="s1">&#39;, &#39;</span><span class="n">remove_conditional_headers</span><span class="s1">&#39;, &#39;</span><span class="n">request_body_tempfile_limit</span><span class="s1">&#39;, &#39;</span><span class="n">scheme</span><span class="s1">&#39;, &#39;</span><span class="n">script_name</span><span class="s1">&#39;, &#39;</span><span class="nb">send</span><span class="s1">&#39;, &#39;</span><span class="n">server_name</span><span class="s1">&#39;, &#39;</span><span class="n">server_port</span><span class="s1">&#39;, &#39;</span><span class="n">str_GET</span><span class="s1">&#39;, &#39;</span><span class="n">str_POST</span><span class="s1">&#39;, &#39;</span><span class="n">str_cookies</span><span class="s1">&#39;, &#39;</span><span class="n">str_params</span><span class="s1">&#39;, &#39;</span><span class="n">text</span><span class="s1">&#39;, &#39;</span><span class="n">upath_info</span><span class="s1">&#39;, &#39;</span><span class="n">url</span><span class="s1">&#39;, &#39;</span><span class="n">url_encoding</span><span class="s1">&#39;, &#39;</span><span class="n">urlargs</span><span class="s1">&#39;, &#39;</span><span class="n">urlvars</span><span class="s1">&#39;, &#39;</span><span class="n">uscript_name</span><span class="s1">&#39;, &#39;</span><span class="n">user_agent</span><span class="err">&#39;</span><span class="o">]&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;h2&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></h2>
+
+<p>一个WSGI的environ需要一些必须的参数，所以Request对象有一个构造器，在创建的时候就会自动添加最小的一些必要的项，如上，我们只指定了一个method，那么我们看看。</p></blockquote></blockquote></blockquote>
+
+<pre><code>&gt;&gt;&gt; req
+&lt;Request at 0x2bbb4d0 (invalid WSGI environ)&gt;
+</code></pre>
+
+<p>显示这个WSGI environ是无效的，因为缺少必要的信息。我们来调用构造器的方法：
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>req = Request.blank('/article?id=1')&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;blockquote>&lt;blockquote>&lt;blockquote>&lt;p>from pprint import pprint
+</span><span class='line'>pprint(req.environ)
+</span><span class='line'>{'HTTP_HOST': 'localhost:80',
+</span><span class='line'> 'PATH_INFO': '/article',
+</span><span class='line'> 'QUERY_STRING': 'id=1',
+</span><span class='line'> 'REQUEST_METHOD': 'GET',
+</span><span class='line'> 'SCRIPT_NAME': '',
+</span><span class='line'> 'SERVER_NAME': 'localhost',
+</span><span class='line'> 'SERVER_PORT': '80',
+</span><span class='line'> 'SERVER_PROTOCOL': 'HTTP/1.0',
+</span><span class='line'> 'wsgi.errors': &lt;open file '&lt;stderr>', mode 'w' at ...>,
+</span><span class='line'> 'wsgi.input': &lt;...IO... object at ...>,
+</span><span class='line'> 'wsgi.multiprocess': False,
+</span><span class='line'> 'wsgi.multithread': False,
+</span><span class='line'> 'wsgi.run_once': False,
+</span><span class='line'> 'wsgi.url_scheme': 'http',
+</span><span class='line'> 'wsgi.version': (1, 0)}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>pprint用来打印字典等效果很好的。这里简单对url做一个说明，/article?id=1我们可以看到article是属于PATH中的，而?分割的是参数，也就是query_string。如果指定了多个参数，也是一起放在QUERY_STRING里面的，如下：</h2>
+
+<p>{}
+req = Request.blank('/article?id=1&amp;id=2')
+pprint(req.environ)
+{'HTTP_HOST': 'localhost:80',
+ 'PATH_INFO': '/article',
+ 'QUERY_STRING': 'id=1&amp;id=2',
+ 'REQUEST_METHOD': 'GET',
+ 'SCRIPT_NAME': '',
+ 'SERVER_NAME': 'localhost',
+ 'SERVER_PORT': '80',
+ 'SERVER_PROTOCOL': 'HTTP/1.0',
+ 'wsgi.errors': <open file '<stderr>', mode 'w' at 0x7f33b863a270>,
+ 'wsgi.input': &lt;_io.BytesIO object at 0x2b94e30>,
+ 'wsgi.multiprocess': False,
+ 'wsgi.multithread': False,
+ 'wsgi.run_once': False,
+ 'wsgi.url_scheme': 'http',
+ 'wsgi.version': (1, 0)}</p>
+
+<h2>{}</h2>
+
+<h2>Request body</h2>
+
+<p>req.body是一个描述了请求body（比如，POST一个表单，PUT的内容）的一个类文件对象（file-like object），我们先把body设置为一个字符串，会被自动转换为一个类文件对象，通过req.body可以访问到body的内容。</p></blockquote></blockquote></blockquote>
+
+<pre><code>&gt;&gt;&gt; req.body="this is body"
+&gt;&gt;&gt; req.body
+'this is body'
+&gt;&gt;&gt; type(req.body)
+&lt;type 'str'&gt;
+</code></pre>
+
+<h2>Method &amp; URL</h2>
+
+<p>一个请求的所有属性都可以通过Request对象的属性来访问，这些属性如下：</p>
+
+<h2>一个请求对象里面比较重要的属性有以下：</h2>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;blockquote>&lt;blockquote>&lt;blockquote>&lt;p>req.scheme
+</span><span class='line'>'http'
+</span><span class='line'>req.method
+</span><span class='line'>'GET'
+</span><span class='line'>req.GET
+</span><span class='line'>GET([(u'id', u'1'), (u'id', u'2')])
+</span><span class='line'>req.params
+</span><span class='line'>NestedMultiDict([(u'id', u'1'), (u'id', u'2')])
+</span><span class='line'>req.body
+</span><span class='line'>'this is body'
+</span><span class='line'>req.headers
+</span><span class='line'>&lt;webob.headers.EnvironHeaders object at 0x2bbbc10>
+</span><span class='line'>req.script_name  # The base of the URL
+</span><span class='line'>''
+</span><span class='line'>req.script_name = '/blog' # make it more interesting
+</span><span class='line'>req.path_info    # The yet-to-be-consumed part of the URL
+</span><span class='line'>'/article'
+</span><span class='line'>req.content_type # Content-Type of the request body
+</span><span class='line'>''
+</span><span class='line'>req.host
+</span><span class='line'>'localhost:80'
+</span><span class='line'>req.host_url
+</span><span class='line'>'http://localhost'
+</span><span class='line'>req.application_url
+</span><span class='line'>'http://localhost/blog'
+</span><span class='line'>req.path_url
+</span><span class='line'>'http://localhost/blog/article'
+</span><span class='line'>req.url
+</span><span class='line'>'http://localhost/blog/article?id=1'
+</span><span class='line'>req.path
+</span><span class='line'>'/blog/article'
+</span><span class='line'>req.path_qs
+</span><span class='line'>'/blog/article?id=1'
+</span><span class='line'>req.query_string
+</span><span class='line'>'id=1'&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+</span><span class='line'>
+</span><span class='line'>&lt;p>req.POST&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>req.cookies&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;p>req.urlvars或者req.urlargs&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;h2></span></code></pre></td></tr></table></div></figure></notextile></div></h2>
+
+<p>对于一个URL，由于我们需要处理PATH_INFO，所以还有以下几种使用：</p>
+
+<pre><code>&gt;&gt;&gt; req.path_info_peek() # Doesn't change request
+'article'
+&gt;&gt;&gt; req.path_info_pop()  # Does change request!
+'article'
+&gt;&gt;&gt; req.script_name
+'/blog/article'
+&gt;&gt;&gt; req.path_info #上面已经pop了，所以这里是空，否则应该是'/article'的。
+''
+</code></pre>
+
+<h2>Headers</h2>
+
+<p>一个请求的header主要是content的定义以及host的定义，可能还会带有一些认证信息。注意，这里的操作大小写敏感。</p>
+
+<pre><code>&gt;&gt;&gt; req.headers['Content-Type'] = 'application/x-www-urlencoded'
+&gt;&gt;&gt; req.headers.items()
+[('Content-Length', '4'), ('Content-Type', 'application/x-www-urlencoded'), ('Host', 'localhost:80')]
+&gt;&gt;&gt; req.environ['CONTENT_TYPE']
+'application/x-www-urlencoded'
+</code></pre>
+
+<h2>Query &amp; POST</h2>
+
+<p>请求可以在两个位置拥有变量，一个是query string（类似上面的?id=1）,二是在body里面（常用于POST表单），但是即便是POST请求也可以拥有query string。所以这两个位置都可能存在变量。并且一个变量可能出现多次，比如?check=a&amp;check=b。</p>
+
+<p>对于上面的东西，WebOb使用了多字典（MultiDict）的形式。所谓MultiDict,就在把一个包含键值对的列表包装成一个字典，看起来就像一个单值字典（single valued dict），但是你可以获得某一个key的所有值，通过.getall(key)(始终返回一个列表)，也可以通过.items()来获得所有的键值对以及.values()获得所有的值。举个例子：</p>
+
+<pre><code>&gt;&gt;&gt; req = Request.blank('/test?check=a&amp;check=b&amp;name=Bob')
+&gt;&gt;&gt; req.GET
+MultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')])
+&gt;&gt;&gt; req.GET['check']
+u'b'
+&gt;&gt;&gt; req.GET.getall('check')
+[u'a', u'b']
+&gt;&gt;&gt; req.GET.items()
+[(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')]
+&gt;&gt;&gt; req.GET.values()
+[u'a', u'b', u'Bob']
+</code></pre>
+
+<p>接下来，我们把req变成一个POST请求。无非就是做两个事，一是更改method，一是给出body。</p>
+
+<pre><code>&gt;&gt;&gt; req.POST
+&lt;NoVars: Not a form request&gt;
+&gt;&gt;&gt; req.POST.items()  # NoVars can be read like a dict, but not written
+[]
+&gt;&gt;&gt; req.method = 'POST'
+&gt;&gt;&gt; req.body = 'name=Joe&amp;email=joe@example.com'
+&gt;&gt;&gt; req.POST
+MultiDict([(u'name', u'Joe'), (u'email', u'joe@example.com')])
+&gt;&gt;&gt; req.POST['name']
+u'Joe'
+</code></pre>
+
+<p>前面我们提到，一个请求的变量（也可以较为参数）可以存在于URL中也可以在Body中，如果我们不关系，变量的位置，那么用req.params就可以看到所有位置的变量，同样，也是通过MultiDict这种形式保存的。</p>
+
+<pre><code>&gt;&gt;&gt; req.params
+NestedMultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob'), (u'name', u'Joe'), (u'email', u'joe@example.com')])
+&gt;&gt;&gt; req.params['name']
+u'Bob'
+&gt;&gt;&gt; req.params.getall('name')
+[u'Bob', u'Joe']
+&gt;&gt;&gt; for name, value in req.params.items():
+...     print '%s: %r' % (name, value)
+check: u'a'
+check: u'b'
+name: u'Bob'
+name: u'Joe'
+email: u'joe@example.com'
+</code></pre>
+
+<p>相对而言，这种方式还很简单一点。至于GET和POST，命名是历史遗留下的。req.GET也可以使用在非GET的请求中，从而来获得参数。如下：</p>
+
+<pre><code>&gt;&gt;&gt; req = Request.blank('/test?check=a&amp;check=b&amp;name=Bob')
+&gt;&gt;&gt; req.method = 'PUT'
+&gt;&gt;&gt; req.body = body = 'var1=value1&amp;var2=value2&amp;rep=1&amp;rep=2'
+&gt;&gt;&gt; req.environ['CONTENT_LENGTH'] = str(len(req.body))
+&gt;&gt;&gt; req.environ['CONTENT_TYPE'] = 'application/x-www-form-urlencoded'
+&gt;&gt;&gt; req.GET
+MultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')])
+&gt;&gt;&gt; req.POST
+MultiDict([(u'var1', u'value1'), (u'var2', u'value2'), (u'rep', u'1'), (u'rep', u'2')])
+</code></pre>
+
+<p>另外，应用中，应该强制使用UTF-8编码，也是通过制定字符集参数。</p>
+
+<pre><code>&gt;&gt;&gt; req.charset = 'utf8'
+&gt;&gt;&gt; req.GET
+MultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')])
+</code></pre>
+
+<p><a href="http://docs.webob.org/en/latest/reference.html#introduction">http://docs.webob.org/en/latest/reference.html#introduction</a>
+<a href="http://docs.webob.org/en/latest/index.html">http://docs.webob.org/en/latest/index.html</a></p>
+]]></content>
+  </entry>
+  
+</feed>

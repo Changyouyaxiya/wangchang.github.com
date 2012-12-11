@@ -11,7 +11,8 @@
   <meta name="author" content="Wang Chang">
 
   
-  <meta name="description" content="上一节中梳理了Python Paste中Deploy机制的概念，这一节就做一点小小的实践。首先，我们举一个使用了Deploy的例子，这个就是OpenStack的Quantum组件的WSGI部分。我们先来看关于WSGI部分的配置文件，以ini后缀，那么就是api-paste.ini文件， &hellip;">
+  <meta name="description" content="
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +69,707 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/python-routes-3-to-wsgi-framework/">Python Routes 3 to WSGI Framework</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-29T19:37:00+08:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/python-routes-3-to-wsgi-framework/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/python-routes-2-restful-services/">Python Routes 2 RESTful Services</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-29T18:37:00+08:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/python-routes-2-restful-services/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这一节主要讲讲用Routes来配置RESTful web services。<code>map.resource</code>可以根据Atom publishing protocol协议来创建一个<code>创建/修改/删除</code>的routes。也就是说根据resource来配置routes。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/11/python-routes-2-restful-services/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/python-routes-1-introduction/">Python.Routes指南1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-29T16:08:00+08:00" pubdate data-updated="true">Nov 29<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/python-routes-1-introduction/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>什么是Routes</h2>
+
+<p>用python重新实现的Rails Routes System，主要用来将URL映射到不同的应用动作（application actions）。特别适合于RESTFUL API。</p>
+
+<p>Routes支持基于domain, cookies, HTTP method, 自定义function的映射。目前支持的功能：</p>
+
+<p>Sophisticated route lookup and URL generation
+Named routes
+Redirect routes
+Wildcard paths before and after static parts
+Sub-domain support built-in
+Conditional matching based on domain, cookies, HTTP method (RESTful), and more
+Easily extensible utilizing custom condition functions and route generation functions
+Extensive unit tests</p>
+
+<p>安装：</p>
+
+<pre><code>easy_install Routes
+pip install Routes
+</code></pre>
+
+<h2>1 基本概念</h2>
+
+<h3>component组件</h3>
+
+<p>一个URL中的一个个组成部分，例如/blog/2012就有两个component:blog,2012</p>
+
+<h3>generation</h3>
+
+<p>基于route的名字或者变量的值创建一个URL，这个是match的反过程。</p>
+
+<h3>mapper</h3>
+
+<p>routes的容器，一般一个应用一个mapper，一个mapper知道如何去匹配routes或者产生routes.</p>
+
+<h3>minimization</h3>
+
+<p>允许短URL进行长路劲的匹配，已废弃。</p>
+
+<h3>routes</h3>
+
+<p>一个规则，将一个URL映射成为一个routing variables的字典，比如，规则是“/{controller}/{action}”，请求的URL是“/help/about”，那么结果字典就是：</p>
+
+<pre><code>{"controller": "help", "action": "about"}
+</code></pre>
+
+<p>routes并不知道这些变量的含义，它只是把这个结果返回给应用。一个route可以拥有一个名字。</p>
+
+<h3>route paths</h3>
+
+<p>一条route中的URL模式（pattern）</p>
+
+<h3>routing variables</h3>
+
+<p>匹配之后返回的键值对。route path中定义的变量叫做path变量，他们的值来自URL中。route path外定义的变量叫做默认变量，其值不受URL影响。</p>
+
+<p>特别注意！在WSGI中，用于route的关键字是environment（environ）中的wsgiorg.routing_args.</p>
+
+<h2>2 简单的例子：</h2>
+
+<pre><code># Setup a mapper
+from routes import Mapper
+map = Mapper()
+map.connect(None, "/error/{action}/{id}, controller="error")
+map.connect("home", "/", controller="main", action="index")
+map.connect(None, "/{controller}/{action}")
+map.connect(None, "/{controller}/{action}/{id}")
+
+
+# Match a URL, returns a dict or None if no match
+result = map.match('/error/myapp/4')
+# result == {'controller': 'main', 'action': 'myapp', 'id': '4'}
+</code></pre>
+
+<p>对上面代码的一个简单解释：
+1~2行创建了一个简单的mapper。</p>
+
+<p>3行创建了一个以/error开始的任意三段的路由，并设置controller变量为一个常量！所以如果一个URL是<code>/error/images/arrow.jpg</code>，执行map.match（&#8221;/error/images/arrow.jpg&#8221;）得到的字典结果就会是：</p>
+
+<p><code>{"controller": "error", "action": "images", "id": "arrow.jpg"}</code></p>
+
+<p>4行创建了/的映射，并将controller和action设置为常量。而&#8221;home&#8221;表示此条route的名字。</p>
+
+<p>6行匹配任务两端的URL。7行匹配任意三段的URL。所以前面的例子&#8221; “/error/images/arrow.jpg”&#8221;还能够匹配6、7行，在这种情况下，Routes采用的是以第一次匹配到的为准，顺序优先。</p>
+
+<p>还有下面的例子：</p>
+
+<pre><code>m.connect("/feeds/{category}/atom.xml", controller="feeds", action="atom")
+m.connect("history", "/archives/by_eon/{century}", controller="archives",
+      action="aggregate")
+m.connect("article", "/article/{section}/{slug}/{page}.html",
+      controller="article", action="view")
+</code></pre>
+
+<h2>3 初步深入</h2>
+
+<h3>3.1 Magic path_info</h3>
+
+<p>如果URL中使用了path_info，Routes会将先前的所有信息移动到“SCRIPT_NAME”这个环境变量中。当另外的WSGI应用有自己的routing的时候这个能起到很好的转移作用。看看如下的例子，用于WSGI环境。</p>
+
+<pre><code>map.connect(None, "/cards/{path_info:.*}",
+   controller="main", action="cards")
+# Incoming URL "/cards/diamonds/4.png"
+=&gt; {"controller": "main", action: "cards", "path_info": "/diamonds/4.png"}
+# Second WSGI application sees:
+# SCRIPT_NAME="/cards"   PATH_INFO="/diamonds/4.png"
+</code></pre>
+
+<h3>3.2 Condition条件匹配</h3>
+
+<p>在一条route中，可以加入相应的条件，以加强匹配效果。condition是一个字典，最多只有以下三个关键字：
+* method
+大写的HTTP方法。
+* sub_domain
+这个目前不是很熟悉。
+* function
+三种方式使用如下：用一个函数来对请求进行处理，<code>func(environ, match_dict) =&gt; bool</code></p>
+
+<p>{}</p>
+
+<h1>Match only if the HTTP method is &#8220;GET&#8221; or &#8220;HEAD&#8221;.</h1>
+
+<p>m.connect(&#8220;/user/list&#8221;, controller=&#8221;user&#8221;, action=&#8221;list&#8221;,</p>
+
+<pre><code>      conditions=dict(method=["GET", "HEAD"]))
+</code></pre>
+
+<h1>A sub-domain should be present.</h1>
+
+<p>m.connect(&#8220;/&#8221;, controller=&#8221;user&#8221;, action=&#8221;home&#8221;,</p>
+
+<pre><code>      conditions=dict(sub_domain=True))
+</code></pre>
+
+<h1>Sub-domain should be either &#8220;fred&#8221; or &#8220;george&#8221;.</h1>
+
+<p>m.connect(&#8220;/&#8221;, controller=&#8221;user&#8221;, action=&#8221;home&#8221;,</p>
+
+<pre><code>      conditions=dict(sub_domain=["fred", "george"]))
+</code></pre>
+
+<h1>Put the referrer into the resulting match dictionary.</h1>
+
+<h1>This function always returns true, so it never prevents the match</h1>
+
+<h1>from succeeding.</h1>
+
+<p>def referals(environ, result):</p>
+
+<pre><code>result["referer"] = environ.get("HTTP_REFERER")
+return True
+</code></pre>
+
+<p>m.connect(&#8220;/{controller}/{action}/{id}&#8221;,</p>
+
+<pre><code>conditions=dict(function=referals))
+</code></pre>
+
+<p>{}</p>
+
+<h3>3.3 在route中还可以使用通配符和正则表达式</h3>
+
+<h3>3.4 格式扩展</h3>
+
+<p>通过<code>{.format}</code>，可以匹配一个格式的扩展，比如.html或者.json。比如：</p>
+
+<pre><code>map.connect('/entries/{id}{.format:json}')
+</code></pre>
+
+<p>就只会匹配到&#8221;/entries/1.json&#8221;。</p>
+
+<h3>submapper</h3>
+
+<h3>从子程序添加routes</h3>
+
+<p>一个子程序可以传递给父程序一个routes的列表，通过mapper的<code>extend</code>方法，增加routes。如下：</p>
+
+<pre><code>routes = [
+   Route("index", "/index.html", controller="home", action="index"),
+    ]
+
+map.extend(routes)
+# /index.html =&gt; {"controller": "home", "action": "index"}
+
+map.extend(routes, "/subapp")
+# /subapp/index.html =&gt; {"controller": "home", "action": "index"}
+</code></pre>
+
+<p><a href="http://routes.readthedocs.org/en/latest/setting_up.html">http://routes.readthedocs.org/en/latest/setting_up.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/how-to-add-api-extension-to-quantum-1/">How to Add Api Extension to Quantum 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-28T11:10:00+08:00" pubdate data-updated="true">Nov 28<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/how-to-add-api-extension-to-quantum-1/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>未完成！！！</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/11/how-to-add-api-extension-to-quantum-1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/11/python-paste-two-webob-1/">Python.Paste指南之WebOb(1)-概念</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-21T16:56:00+08:00" pubdate data-updated="true">Nov 21<span>st</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/python-paste-two-webob-1/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>这次主要来学习Paste的核心内容，WebOb，内容依然来自官方翻译、网络参考以及自己的实践。</p>
+
+<blockquote></blockquote>
+
+<h2>What is WebOb?</h2>
+
+<p>WebOb是一个Python库，主要是用在WSGI中对请求环境变量request environment（也就是WSGI应用中的参数environ）进行包装（提供wrapper），并提供了一个对象来方便的处理返回response消息。WebOb提供的对象映射了大多数的HTTP方法，包括头解析，content协商等。这里的映射，就是说只需要对对象进行操作，就可以完成HHTP的方法，从而大大简化开发难度。引用官方文档，WebOb有以下特点：</p>
+
+<blockquote><p>Maps most of HTTP spec to friendly data structures.
+Time-proven codebase that works around and hides all known WSGI quirks.
+Zero known issues (reported bugs are always fixed ASAP).
+100% test coverage.
+No external dependencies.
+Supports Python 3</p></blockquote>
+
+<p>WebOb为HTTP的请求和相应提供了相应的对象。通过对WSGI request environment进行wrap来简化操作。</p>
+
+<h2>Request</h2>
+
+<p><code>webob.Request</code>对象是对WSGI environ dictionary的一个包装。后者这个字典以键值的形式描述了一个HTTP请求包括path信息和query string，以及一个与文件对象类似的秒速请求的body，以及一些其他的自定义keys。如下可以创建一个简单的Request对象。</p>
+
+<pre><code>&gt;&gt;&gt;from webob import Request
+&gt;&gt;&gt;environ = {'method': 'GET'}  
+&gt;&gt;&gt;req = Request(environ) 
+</code></pre>
+
+<p>强调，<code>The request object wraps the environment</code>，仅仅是包装，所以你可以对这个environ进行读写的。可以通过req.environ可以访问到这个environ。但是一般都没必要这样做，直接用这个Request对象来操作就好了。如下：</p>
+
+<pre><code>&gt;&gt;&gt;req.environ
+{'method': 'GET'}
+&gt;&gt;&gt;req.method 
+'GET'
+</code></pre>
+
+<h2>此外，还有，req.accept_language, req.content_length, req.user_agent等。我们可以通过dir(req)来看看这个对象的方法咯。</h2>
+
+<figure class='code'><figcaption><span>- awesome.rb </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">&gt;&gt;&gt;</span><span class="n">dir</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+</span><span class='line'><span class="o">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;ResponseClass&#39;</span><span class="p">,</span> <span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__delattr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__format__&#39;</span><span class="p">,</span> <span class="s1">&#39;__getattr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__getattribute__&#39;</span><span class="p">,</span> <span class="s1">&#39;__hash__&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__new__&#39;</span><span class="p">,</span> <span class="s1">&#39;__reduce__&#39;</span><span class="p">,</span> <span class="s1">&#39;__reduce_ex__&#39;</span><span class="p">,</span> <span class="s1">&#39;__repr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__setattr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__sizeof__&#39;</span><span class="p">,</span> <span class="s1">&#39;__str__&#39;</span><span class="p">,</span> <span class="s1">&#39;__subclasshook__&#39;</span><span class="p">,</span> <span class="s1">&#39;__weakref__&#39;</span><span class="p">,</span> <span class="s1">&#39;_body__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_body__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_body__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_body_file__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_body_file__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_body_file__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_cache_control__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_cache_control__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_cache_control__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_charset&#39;</span><span class="p">,</span> <span class="s1">&#39;_check_charset&#39;</span><span class="p">,</span> <span class="s1">&#39;_content_type__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_content_type__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_content_type_raw&#39;</span><span class="p">,</span> <span class="s1">&#39;_copy_body_tempfile&#39;</span><span class="p">,</span> <span class="s1">&#39;_headers&#39;</span><span class="p">,</span> <span class="s1">&#39;_headers__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_headers__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_host__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_host__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_host__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_is_body_readable__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_is_body_readable__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_json_body__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_json_body__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_json_body__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_setattr_stacklevel&#39;</span><span class="p">,</span> <span class="s1">&#39;_text__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_text__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_text__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_update_cache_control&#39;</span><span class="p">,</span> <span class="s1">&#39;_urlargs__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_urlargs__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_urlargs__set&#39;</span><span class="p">,</span> <span class="s1">&#39;_urlvars__del&#39;</span><span class="p">,</span> <span class="s1">&#39;_urlvars__get&#39;</span><span class="p">,</span> <span class="s1">&#39;_urlvars__set&#39;</span><span class="p">,</span> <span class="s1">&#39;accept&#39;</span><span class="p">,</span> <span class="s1">&#39;accept_charset&#39;</span><span class="p">,</span> <span class="s1">&#39;accept_encoding&#39;</span><span class="p">,</span> <span class="s1">&#39;accept_language&#39;</span><span class="p">,</span> <span class="s1">&#39;application_url&#39;</span><span class="p">,</span> <span class="s1">&#39;as_bytes&#39;</span><span class="p">,</span> <span class="s1">&#39;as_string&#39;</span><span class="p">,</span> <span class="s1">&#39;as_text&#39;</span><span class="p">,</span> <span class="s1">&#39;authorization&#39;</span><span class="p">,</span> <span class="s1">&#39;blank&#39;</span><span class="p">,</span> <span class="s1">&#39;body&#39;</span><span class="p">,</span> <span class="s1">&#39;body_file&#39;</span><span class="p">,</span> <span class="s1">&#39;body_file_raw&#39;</span><span class="p">,</span> <span class="s1">&#39;body_file_seekable&#39;</span><span class="p">,</span> <span class="s1">&#39;cache_control&#39;</span><span class="p">,</span> <span class="s1">&#39;call_application&#39;</span><span class="p">,</span> <span class="s1">&#39;charset&#39;</span><span class="p">,</span> <span class="s1">&#39;client_addr&#39;</span><span class="p">,</span> <span class="s1">&#39;content_length&#39;</span><span class="p">,</span> <span class="s1">&#39;content_type&#39;</span><span class="p">,</span> <span class="s1">&#39;cookies&#39;</span><span class="p">,</span> <span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;copy_body&#39;</span><span class="p">,</span> <span class="s1">&#39;copy_get&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;decode&#39;</span><span class="p">,</span> <span class="s1">&#39;encget&#39;</span><span class="p">,</span> <span class="s1">&#39;encset&#39;</span><span class="p">,</span> <span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;from_bytes&#39;</span><span class="p">,</span> <span class="s1">&#39;from_file&#39;</span><span class="p">,</span> <span class="s1">&#39;from_string&#39;</span><span class="p">,</span> <span class="s1">&#39;from_text&#39;</span><span class="p">,</span> <span class="s1">&#39;get_response&#39;</span><span class="p">,</span> <span class="s1">&#39;headers&#39;</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;host_port&#39;</span><span class="p">,</span> <span class="s1">&#39;host_url&#39;</span><span class="p">,</span> <span class="s1">&#39;http_version&#39;</span><span class="p">,</span> <span class="s1">&#39;if_match&#39;</span><span class="p">,</span> <span class="s1">&#39;if_modified_since&#39;</span><span class="p">,</span> <span class="s1">&#39;if_none_match&#39;</span><span class="p">,</span> <span class="s1">&#39;if_range&#39;</span><span class="p">,</span> <span class="s1">&#39;if_unmodified_since&#39;</span><span class="p">,</span> <span class="s1">&#39;is_body_readable&#39;</span><span class="p">,</span> <span class="s1">&#39;is_body_seekable&#39;</span><span class="p">,</span> <span class="s1">&#39;is_xhr&#39;</span><span class="p">,</span> <span class="s1">&#39;json&#39;</span><span class="p">,</span> <span class="s1">&#39;json_body&#39;</span><span class="p">,</span> <span class="s1">&#39;make_body_seekable&#39;</span><span class="p">,</span> <span class="s1">&#39;make_default_send_app&#39;</span><span class="p">,</span> <span class="s1">&#39;make_tempfile&#39;</span><span class="p">,</span> <span class="s1">&#39;max_forwards&#39;</span><span class="p">,</span> <span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="s1">&#39;params&#39;</span><span class="p">,</span> <span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="s1">&#39;path_info&#39;</span><span class="p">,</span> <span class="s1">&#39;path_info_peek&#39;</span><span class="p">,</span> <span class="s1">&#39;path_info_pop&#39;</span><span class="p">,</span> <span class="s1">&#39;path_qs&#39;</span><span class="p">,</span> <span class="s1">&#39;path_url&#39;</span><span class="p">,</span> <span class="s1">&#39;pragma&#39;</span><span class="p">,</span> <span class="s1">&#39;query_string&#39;</span><span class="p">,</span> <span class="s1">&#39;range&#39;</span><span class="p">,</span> <span class="s1">&#39;referer&#39;</span><span class="p">,</span> <span class="s1">&#39;referrer&#39;</span><span class="p">,</span> <span class="s1">&#39;relative_url&#39;</span><span class="p">,</span> <span class="s1">&#39;remote_addr&#39;</span><span class="p">,</span> <span class="s1">&#39;remote_user&#39;</span><span class="p">,</span> <span class="s1">&#39;remove_conditional_headers&#39;</span><span class="p">,</span> <span class="s1">&#39;request_body_tempfile_limit&#39;</span><span class="p">,</span> <span class="s1">&#39;scheme&#39;</span><span class="p">,</span> <span class="s1">&#39;script_name&#39;</span><span class="p">,</span> <span class="s1">&#39;send&#39;</span><span class="p">,</span> <span class="s1">&#39;server_name&#39;</span><span class="p">,</span> <span class="s1">&#39;server_port&#39;</span><span class="p">,</span> <span class="s1">&#39;str_GET&#39;</span><span class="p">,</span> <span class="s1">&#39;str_POST&#39;</span><span class="p">,</span> <span class="s1">&#39;str_cookies&#39;</span><span class="p">,</span> <span class="s1">&#39;str_params&#39;</span><span class="p">,</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;upath_info&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;url_encoding&#39;</span><span class="p">,</span> <span class="s1">&#39;urlargs&#39;</span><span class="p">,</span> <span class="s1">&#39;urlvars&#39;</span><span class="p">,</span> <span class="s1">&#39;uscript_name&#39;</span><span class="p">,</span> <span class="s1">&#39;user_agent&#39;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>一个WSGI的environ需要一些必须的参数，所以Request对象有一个构造器，在创建的时候就会自动添加最小的一些必要的项，如上，我们只指定了一个method，那么我们看看。</p>
+
+<pre><code>&gt;&gt;&gt; req
+&lt;Request at 0x2bbb4d0 (invalid WSGI environ)&gt;
+</code></pre>
+
+<p>显示这个WSGI environ是无效的，因为缺少必要的信息。我们来调用构造器的方法：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>req = Request.blank('/article?id=1')
+</span><span class='line'>>>> from pprint import pprint
+</span><span class='line'>>>> pprint(req.environ)
+</span><span class='line'>{'HTTP_HOST': 'localhost:80',
+</span><span class='line'> 'PATH_INFO': '/article',
+</span><span class='line'> 'QUERY_STRING': 'id=1',
+</span><span class='line'> 'REQUEST_METHOD': 'GET',
+</span><span class='line'> 'SCRIPT_NAME': '',
+</span><span class='line'> 'SERVER_NAME': 'localhost',
+</span><span class='line'> 'SERVER_PORT': '80',
+</span><span class='line'> 'SERVER_PROTOCOL': 'HTTP/1.0',
+</span><span class='line'> 'wsgi.errors': &lt;open file '&lt;stderr>', mode 'w' at ...>,
+</span><span class='line'> 'wsgi.input': &lt;...IO... object at ...>,
+</span><span class='line'> 'wsgi.multiprocess': False,
+</span><span class='line'> 'wsgi.multithread': False,
+</span><span class='line'> 'wsgi.run_once': False,
+</span><span class='line'> 'wsgi.url_scheme': 'http',
+</span><span class='line'> 'wsgi.version': (1, 0)}</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>pprint用来打印字典等效果很好的。这里简单对url做一个说明，/article?id=1我们可以看到article是属于PATH中的，而?分割的是参数，也就是query_string。如果指定了多个参数，也是一起放在QUERY_STRING里面的，如下：</h2>
+
+<p>{}</p>
+
+<blockquote><blockquote><blockquote><p>req = Request.blank(&#8216;/article?id=1&amp;id=2&#8217;)
+pprint(req.environ)
+{&#8216;HTTP_HOST&#8217;: &#8216;localhost:80&#8217;,
+ &#8216;PATH_INFO&#8217;: &#8216;/article&#8217;,
+ &#8216;QUERY_STRING&#8217;: &#8216;id=1&amp;id=2&#8217;,
+ &#8216;REQUEST_METHOD&#8217;: &#8216;GET&#8217;,
+ &#8216;SCRIPT_NAME&#8217;: &#8221;,
+ &#8216;SERVER_NAME&#8217;: &#8216;localhost&#8217;,
+ &#8216;SERVER_PORT&#8217;: &#8216;80&#8217;,
+ &#8216;SERVER_PROTOCOL&#8217;: &#8216;HTTP/1.0&#8217;,
+ &#8216;wsgi.errors&#8217;: <open file '<stderr>&#8217;, mode &#8216;w&#8217; at 0x7f33b863a270>,
+ &#8216;wsgi.input&#8217;: &lt;_io.BytesIO object at 0x2b94e30>,
+ &#8216;wsgi.multiprocess&#8217;: False,
+ &#8216;wsgi.multithread&#8217;: False,
+ &#8216;wsgi.run_once&#8217;: False,
+ &#8216;wsgi.url_scheme&#8217;: &#8216;http&#8217;,
+ &#8216;wsgi.version&#8217;: (1, 0)}</p>
+
+<h2>{}</h2>
+
+<h2>Request body</h2>
+
+<p>req.body是一个描述了请求body（比如，POST一个表单，PUT的内容）的一个类文件对象（file-like object），我们先把body设置为一个字符串，会被自动转换为一个类文件对象，通过req.body可以访问到body的内容。</p></blockquote></blockquote></blockquote>
+
+<pre><code>&gt;&gt;&gt; req.body="this is body"
+&gt;&gt;&gt; req.body
+'this is body'
+&gt;&gt;&gt; type(req.body)
+&lt;type 'str'&gt;
+</code></pre>
+
+<h2>Method &amp; URL</h2>
+
+<p>一个请求的所有属性都可以通过Request对象的属性来访问，这些属性如下：</p>
+
+<h2>一个请求对象里面比较重要的属性有以下：</h2>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>>>> req.scheme
+</span><span class='line'>'http'
+</span><span class='line'>>>>req.method
+</span><span class='line'>'GET'
+</span><span class='line'>>>> req.GET
+</span><span class='line'>GET([(u'id', u'1'), (u'id', u'2')])
+</span><span class='line'>>>> req.params
+</span><span class='line'>NestedMultiDict([(u'id', u'1'), (u'id', u'2')])
+</span><span class='line'>>>> req.body
+</span><span class='line'>'this is body'
+</span><span class='line'>>>> req.headers
+</span><span class='line'>&lt;webob.headers.EnvironHeaders object at 0x2bbbc10>
+</span><span class='line'>>>> req.script_name  # The base of the URL
+</span><span class='line'>''
+</span><span class='line'>>>> req.script_name = '/blog' # make it more interesting
+</span><span class='line'>>>> req.path_info    # The yet-to-be-consumed part of the URL
+</span><span class='line'>'/article'
+</span><span class='line'>>>> req.content_type # Content-Type of the request body
+</span><span class='line'>''
+</span><span class='line'>>>> req.host
+</span><span class='line'>'localhost:80'
+</span><span class='line'>>>> req.host_url
+</span><span class='line'>'http://localhost'
+</span><span class='line'>>>> req.application_url
+</span><span class='line'>'http://localhost/blog'
+</span><span class='line'>>>> req.path_url
+</span><span class='line'>'http://localhost/blog/article'
+</span><span class='line'>>>> req.url
+</span><span class='line'>'http://localhost/blog/article?id=1'
+</span><span class='line'>>>> req.path
+</span><span class='line'>'/blog/article'
+</span><span class='line'>>>> req.path_qs
+</span><span class='line'>'/blog/article?id=1'
+</span><span class='line'>>>> req.query_string
+</span><span class='line'>'id=1'
+</span><span class='line'>
+</span><span class='line'>req.POST
+</span><span class='line'>
+</span><span class='line'>req.cookies
+</span><span class='line'>
+</span><span class='line'>req.urlvars或者req.urlargs</span></code></pre></td></tr></table></div></figure>
+
+
+<hr />
+
+<p>对于一个URL，由于我们需要处理PATH_INFO，所以还有以下几种使用：</p>
+
+<pre><code>&gt;&gt;&gt; req.path_info_peek() # Doesn't change request
+'article'
+&gt;&gt;&gt; req.path_info_pop()  # Does change request!
+'article'
+&gt;&gt;&gt; req.script_name
+'/blog/article'
+&gt;&gt;&gt; req.path_info #上面已经pop了，所以这里是空，否则应该是'/article'的。
+''
+</code></pre>
+
+<h2>Headers</h2>
+
+<p>一个请求的header主要是content的定义以及host的定义，可能还会带有一些认证信息。注意，这里的操作大小写敏感。</p>
+
+<pre><code>&gt;&gt;&gt; req.headers['Content-Type'] = 'application/x-www-urlencoded'
+&gt;&gt;&gt; req.headers.items()
+[('Content-Length', '4'), ('Content-Type', 'application/x-www-urlencoded'), ('Host', 'localhost:80')]
+&gt;&gt;&gt; req.environ['CONTENT_TYPE']
+'application/x-www-urlencoded'
+</code></pre>
+
+<h2>Query &amp; POST</h2>
+
+<p>请求可以在两个位置拥有变量，一个是query string（类似上面的?id=1）,二是在body里面（常用于POST表单），但是即便是POST请求也可以拥有query string。所以这两个位置都可能存在变量。并且一个变量可能出现多次，比如?check=a&amp;check=b。</p>
+
+<p>对于上面的东西，WebOb使用了多字典（MultiDict）的形式。所谓MultiDict,就在把一个包含键值对的列表包装成一个字典，看起来就像一个单值字典（single valued dict），但是你可以获得某一个key的所有值，通过.getall(key)(始终返回一个列表)，也可以通过.items()来获得所有的键值对以及.values()获得所有的值。举个例子：</p>
+
+<pre><code>&gt;&gt;&gt; req = Request.blank('/test?check=a&amp;check=b&amp;name=Bob')
+&gt;&gt;&gt; req.GET
+MultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')])
+&gt;&gt;&gt; req.GET['check']
+u'b'
+&gt;&gt;&gt; req.GET.getall('check')
+[u'a', u'b']
+&gt;&gt;&gt; req.GET.items()
+[(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')]
+&gt;&gt;&gt; req.GET.values()
+[u'a', u'b', u'Bob']
+</code></pre>
+
+<p>接下来，我们把req变成一个POST请求。无非就是做两个事，一是更改method，一是给出body。</p>
+
+<pre><code>&gt;&gt;&gt; req.POST
+&lt;NoVars: Not a form request&gt;
+&gt;&gt;&gt; req.POST.items()  # NoVars can be read like a dict, but not written
+[]
+&gt;&gt;&gt; req.method = 'POST'
+&gt;&gt;&gt; req.body = 'name=Joe&amp;email=joe@example.com'
+&gt;&gt;&gt; req.POST
+MultiDict([(u'name', u'Joe'), (u'email', u'joe@example.com')])
+&gt;&gt;&gt; req.POST['name']
+u'Joe'
+</code></pre>
+
+<p>前面我们提到，一个请求的变量（也可以较为参数）可以存在于URL中也可以在Body中，如果我们不关系，变量的位置，那么用req.params就可以看到所有位置的变量，同样，也是通过MultiDict这种形式保存的。</p>
+
+<pre><code>&gt;&gt;&gt; req.params
+NestedMultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob'), (u'name', u'Joe'), (u'email', u'joe@example.com')])
+&gt;&gt;&gt; req.params['name']
+u'Bob'
+&gt;&gt;&gt; req.params.getall('name')
+[u'Bob', u'Joe']
+&gt;&gt;&gt; for name, value in req.params.items():
+...     print '%s: %r' % (name, value)
+check: u'a'
+check: u'b'
+name: u'Bob'
+name: u'Joe'
+email: u'joe@example.com'
+</code></pre>
+
+<p>相对而言，这种方式还很简单一点。至于GET和POST，命名是历史遗留下的。req.GET也可以使用在非GET的请求中，从而来获得参数。如下：</p>
+
+<pre><code>&gt;&gt;&gt; req = Request.blank('/test?check=a&amp;check=b&amp;name=Bob')
+&gt;&gt;&gt; req.method = 'PUT'
+&gt;&gt;&gt; req.body = body = 'var1=value1&amp;var2=value2&amp;rep=1&amp;rep=2'
+&gt;&gt;&gt; req.environ['CONTENT_LENGTH'] = str(len(req.body))
+&gt;&gt;&gt; req.environ['CONTENT_TYPE'] = 'application/x-www-form-urlencoded'
+&gt;&gt;&gt; req.GET
+MultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')])
+&gt;&gt;&gt; req.POST
+MultiDict([(u'var1', u'value1'), (u'var2', u'value2'), (u'rep', u'1'), (u'rep', u'2')])
+</code></pre>
+
+<p>另外，应用中，应该强制使用UTF-8编码，也是通过制定字符集参数。</p>
+
+<pre><code>&gt;&gt;&gt; req.charset = 'utf8'
+&gt;&gt;&gt; req.GET
+MultiDict([(u'check', u'a'), (u'check', u'b'), (u'name', u'Bob')])
+</code></pre>
+
+<p><a href="http://docs.webob.org/en/latest/reference.html#introduction">http://docs.webob.org/en/latest/reference.html#introduction</a>
+<a href="http://docs.webob.org/en/latest/index.html">http://docs.webob.org/en/latest/index.html</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -314,243 +1016,6 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/best-format-for-octopress-article/">Octopress中文章信息头的最好形式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-21T13:36:00+08:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/best-format-for-octopress-article/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>主要记录一下octopres中编辑文章头信息最好的格式。</p>
-
-<blockquote><p>OS:Ubuntu12.04 2012年10月21日 第一版</p></blockquote>
-
-<figure class='code'><figcaption><span>best format - awesome.rb </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="o">---</span>
-</span><span class='line'><span class="n">layout</span><span class="p">:</span> <span class="n">post</span>
-</span><span class='line'><span class="n">title</span><span class="p">:</span> <span class="s2">&quot;SEO for Octopress&quot;</span>  <span class="c1">#文章标题</span>
-</span><span class='line'><span class="n">date</span><span class="p">:</span> <span class="mi">2012</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">55</span>  <span class="c1">#写作时间</span>
-</span><span class='line'><span class="n">comments</span><span class="p">:</span> <span class="kp">true</span> <span class="c1">#允许评论</span>
-</span><span class='line'><span class="n">categories</span><span class="p">:</span> <span class="o">[</span><span class="n">seo</span><span class="p">,</span><span class="n">octopress</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.]</span> <span class="c1">#多个分类标记</span>
-</span><span class='line'><span class="n">tags</span><span class="p">:</span> <span class="o">[</span><span class="n">key1</span><span class="p">,</span><span class="n">key2</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.]</span> <span class="c1">#支持多个tag的功能</span>
-</span><span class='line'><span class="n">keywords</span><span class="p">:</span> <span class="n">seo</span><span class="p">,</span><span class="n">octopress</span><span class="p">,</span><span class="o">.</span><span class="n">.</span><span class="o">.</span> <span class="c1">#关键字</span>
-</span><span class='line'><span class="n">description</span><span class="p">:</span> <span class="err">“</span><span class="no">How</span> <span class="n">to</span> <span class="n">optimize</span> <span class="no">Octopress</span> <span class="k">for</span> <span class="no">SEO</span><span class="p">,</span><span class="no">Heroku</span><span class="err">”</span> <span class="c1">#文章描述，用于搜索引擎显示的内容</span>
-</span><span class='line'><span class="o">---</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/10/best-format-for-octopress-article/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/add-tags-for-octopress/">Add Tags for Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-21T13:27:00+08:00" pubdate data-updated="true">Oct 21<span>st</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/add-tags-for-octopress/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/">在用Github搭建的Octopress博客中安装百度统计</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-15T20:38:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我发现用Github搭建的octopress有个缺点就是貌似不怎么容易被搜索引擎检索到,这个先不管了,以后再折腾.这里主要记录一下如何在octopress中安装百度统计.因为百度统计不是octopress默认支持的,不像Google分析那样直接改了配置就能用,所以需要手动安装.</p>
-
-<blockquote><p>OS:Ubuntu 12.04 2012年10月15日 第一版</p></blockquote>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/10/install-baidu-analytics-on-octopress-which-based-on-github-pages/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/improve-octopress-theme/">Improve Octopress Theme</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-15T19:08:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/improve-octopress-theme/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content">
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/octopress-and-markdown-style/">Octopress中的写作效果</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-15T13:29:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/10/octopress-and-markdown-style/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>关于如何在octopress中使用插件或者markdown语法营造出特定的代码效果,我折腾了好久,网上大多没有比较基础易懂的教程,所以今天对于markdown语法和octopress的写作效果做一个总结,方便以后查找.这其中也包含了对octopress首页中写作插件的翻译.</p>
-
-<blockquote><p>About: OS:Win 7 2012年10月15日，第一版。</p></blockquote>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/10/octopress-and-markdown-style/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -572,27 +1037,27 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/11/python-routes-3-to-wsgi-framework/">python routes 3 to WSGI framework</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/python-routes-2-restful-services/">python routes 2 RESTful services</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/python-routes-1-introduction/">Python.Routes指南1 </a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/how-to-add-api-extension-to-quantum-1/">how to add api extension to quantum 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/11/python-paste-two-webob-1/">Python.Paste指南之WebOb(1)-概念</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/11/python-paste-one-deploy-2/">Python.Paste指南之Deploy(2)-实践</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/git-origin-reset-to-commit/">git origin reset to commit</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/python-paste-one-deploy-1/">Python.Paste指南之Deploy(1)-概念</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/sqlalchemy-tutorial-1/">Python Sqlalchemy指南(一)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/11/close-touchpad-in-ubuntu12-dot-04s/">在Ubuntu12.04下关闭触摸板</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/best-format-for-octopress-article/">Octopress中文章信息头的最好形式</a>
       </li>
     
   </ul>
@@ -604,7 +1069,7 @@ OS:Win7 or Ubuntu12.04</p></blockquote>
 
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/git' style='font-size: 115.0%'>Git(1)</a> <a href='/blog/categories/life' style='font-size: 130.0%'>Life(2)</a> <a href='/blog/categories/markdown' style='font-size: 115.0%'>Markdown(1)</a> <a href='/blog/categories/octopress' style='font-size: 145.0%'>Octopress(3)</a> <a href='/blog/categories/octopress' style='font-size: 130.0%'>octopress(2)</a> <a href='/blog/categories/paste-deploy' style='font-size: 130.0%'>Paste.Deploy(2)</a> <a href='/blog/categories/python' style='font-size: 160.0%'>Python(4)</a> <a href='/blog/categories/seo' style='font-size: 115.0%'>SEO(1)</a> <a href='/blog/categories/sqlalchemy' style='font-size: 115.0%'>sqlalchemy(1)</a> <a href='/blog/categories/tags' style='font-size: 115.0%'>tags(1)</a> <a href='/blog/categories/ubuntu' style='font-size: 115.0%'>Ubuntu(1)</a> <a href='/blog/categories/vim' style='font-size: 115.0%'>Vim(1)</a> <a href='/blog/categories/web' style='font-size: 115.0%'>Web(1)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/git' style='font-size: 108.57142857142857%'>Git(1)</a> <a href='/blog/categories/life' style='font-size: 117.14285714285714%'>Life(2)</a> <a href='/blog/categories/markdown' style='font-size: 108.57142857142857%'>Markdown(1)</a> <a href='/blog/categories/octopress' style='font-size: 125.71428571428572%'>Octopress(3)</a> <a href='/blog/categories/octopress' style='font-size: 117.14285714285714%'>octopress(2)</a> <a href='/blog/categories/paste-deploy' style='font-size: 117.14285714285714%'>Paste.Deploy(2)</a> <a href='/blog/categories/paste-webob' style='font-size: 108.57142857142857%'>Paste.webob(1)</a> <a href='/blog/categories/python' style='font-size: 160.0%'>Python(7)</a> <a href='/blog/categories/routes' style='font-size: 117.14285714285714%'>Routes(2)</a> <a href='/blog/categories/seo' style='font-size: 108.57142857142857%'>SEO(1)</a> <a href='/blog/categories/sqlalchemy' style='font-size: 108.57142857142857%'>sqlalchemy(1)</a> <a href='/blog/categories/tags' style='font-size: 108.57142857142857%'>tags(1)</a> <a href='/blog/categories/ubuntu' style='font-size: 108.57142857142857%'>Ubuntu(1)</a> <a href='/blog/categories/vim' style='font-size: 108.57142857142857%'>Vim(1)</a> <a href='/blog/categories/web' style='font-size: 108.57142857142857%'>Web(1)</a> <a href='/blog/categories/web开发' style='font-size: 117.14285714285714%'>Web开发(2)</a> <a href='/blog/categories/wsgi' style='font-size: 117.14285714285714%'>WSGI(2)</a> </span>
 </section>
 <section>
   <h1>Tags</h1>
